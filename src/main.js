@@ -67,8 +67,8 @@ function setupReveal() {
 
   const phone = window.matchMedia('(max-width: 899px)').matches
   const selector = phone
-    ? '.section-head, .facts-list, .truths, .chapters, .gallery, .walkthrough, .sources, .battery, .table-wrap, .faq, .places, .map-card, .form-card, .footer-grid'
-    : '.section-head, .facts-list > li, .truths > li, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .table-wrap, .faq details, .places > li, .map-card, .form-card, .footer-grid > div'
+    ? '.section-head, .facts-list, .truths, .chapters, .gallery, .walkthrough, .sources, .battery, .indep-note, .table-wrap, .faq, .places, .map-card, .form-card, .footer-grid'
+    : '.section-head, .facts-list > li, .truths > li, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .indep-note, .table-wrap, .faq details, .places > li, .map-card, .form-card, .footer-grid > div'
   const nodes = [...document.querySelectorAll(selector)]
   if (!nodes.length) return
 

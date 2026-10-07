@@ -47,6 +47,14 @@ for (const phrase of [
   'placeholder',
   'motor refeito aos 550 mil km',
   'FIPE até R$ 50 mil',
+  'cabana aconchegante',
+  'Independência energética e de água',
+  'Documentada como motorcasa',
+  'sem dívidas',
+  'Revisada',
+  'Pronta para viajar pela América Latina',
+  'a maior estante em motorhome da América Latina',
+  'maps.google.com/maps?q=Anit',
 ]) {
   if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
 }

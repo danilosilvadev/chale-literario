@@ -1534,3 +1534,183 @@ input::placeholder {
     padding-bottom: 1rem;
   }
 }
+
+/* ---- Cabana: subtítulo, selos e independência energética e de água ---- */
+
+.hero-sub {
+  margin-top: 0.85rem;
+  max-width: 34em;
+  font-size: 1.08rem;
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.95rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.badges li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.7rem;
+  border: 1px solid rgba(20, 53, 44, 0.28);
+  border-radius: 999px;
+  background: rgba(20, 53, 44, 0.06);
+  color: var(--forest);
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.badges li::before {
+  content: "";
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--forest);
+  flex: 0 0 auto;
+}
+
+.badges strong {
+  font-weight: 600;
+}
+
+.indep-title {
+  margin: 1.6rem 0 0.75rem;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+.section-head + .indep-title {
+  margin-top: 0.4rem;
+}
+
+.indep-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-bottom: 0.6rem;
+  border-radius: 50%;
+  background: #f1e6d6;
+  color: var(--wood);
+  border: 1px solid rgba(122, 78, 50, 0.22);
+}
+
+.indep-icon .icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.battery .indep-icon {
+  margin-bottom: 0.35rem;
+}
+
+.indep-note {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+  padding: 1rem 1.15rem;
+  border-radius: 16px;
+  background: var(--forest);
+  color: var(--on-forest);
+  line-height: 1.6;
+}
+
+.indep-note .indep-icon {
+  margin: 0;
+  background: rgba(247, 243, 236, 0.12);
+  border-color: rgba(247, 243, 236, 0.25);
+  color: #f2d7a6;
+}
+
+@media (min-width: 720px) {
+  .truths {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1100px) {
+  .truths {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy > *:nth-child(8) { animation-delay: 0.54s; }
+  .hero-copy > *:nth-child(9) { animation-delay: 0.6s; }
+  .hero-copy > *:nth-child(10) { animation-delay: 0.66s; }
+  .hero-copy > *:nth-child(11) { animation-delay: 0.72s; }
+
+  @keyframes icon-pop {
+    0% { transform: scale(0.6); opacity: 0; }
+    70% { transform: scale(1.08); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes sun-turn {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(90deg); }
+  }
+
+  @keyframes flame-flicker {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(1.08); }
+  }
+
+  @keyframes charge-fill {
+    from { stroke-dasharray: 0 20; }
+    to { stroke-dasharray: 9 20; }
+  }
+
+  html.js .reveal .indep-icon {
+    opacity: 0;
+  }
+
+  html.js .reveal.is-in .indep-icon {
+    animation: icon-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--reveal-delay, 0ms) + 120ms);
+  }
+
+  html.js .reveal.is-in .indep-icon--sun .rays {
+    transform-origin: 12px 12px;
+    transform-box: view-box;
+    animation: sun-turn 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  }
+
+  html.js .reveal.is-in .indep-icon--flame .icon {
+    transform-origin: 50% 100%;
+    animation: flame-flicker 2.4s ease-in-out 0.6s 2;
+  }
+
+  html.js .reveal.is-in .indep-icon--battery .charge {
+    animation: charge-fill 1.2s ease-out 0.35s both;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 899px) {
+  .hero-copy > *:nth-child(8) { animation-delay: 0.28s; }
+  .hero-copy > *:nth-child(9) { animation-delay: 0.32s; }
+  .hero-copy > *:nth-child(10) { animation-delay: 0.36s; }
+  .hero-copy > *:nth-child(11) { animation-delay: 0.4s; }
+
+  html.js .reveal.is-in .indep-icon {
+    animation-duration: 0.4s;
+  }
+}
+
+@media print {
+  .badges li {
+    border-color: #000;
+    background: none;
+  }
+}

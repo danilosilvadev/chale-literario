@@ -9,7 +9,9 @@
 - Pontos fortes em evidência: hidráulica com água quente, proteção térmica, vedação, motor/sistemas em bom funcionamento, madeira tratada, energia solar.
 - **Estante de livros:** destaque forte — linda estante; claim do anúncio: **a maior estante em motorhome da América Latina** (hero, fatos, galeria, capítulos, ficha e FAQ).
 - Onde está: Anitápolis, Santa Catarina. **Visita presencial só em Anitápolis** — o interessado vem até a casa; o vendedor não vai ao comprador nem marca ponto em São José/Florianópolis. Videochamada sem compromisso continua ok como prévia remota.
-- A página não afirma que o documento já é motorcasa. Isso se confirma no CRLV, na visita.
+- **Documentação (confirmado pelo Dan em 07/10/2026):** documentada como **motorcasa** no CRLV; em dia, **sem dívidas**; **revisada**; **pronta para viajar pela América Latina**. Selos no hero, linha "Documentação"/"Estado" na ficha, FAQ e rodapé.
+- **Narrativa (out/2026): "motorhome cabana aconchegante".** Hero: "Uma cabana aconchegante sobre rodas". A estante é o coração da casa: pinus tratado, luz quente em quatro camadas, livros, quarto traseiro com a vista entrando pelas portas.
+- **Independência energética e de água** (seção `#energia`): sol 310 W + alternador + tomada no mesmo banco (~680 Ah), hidráulica completa com água a bordo e água quente, banheiro naval. **Sem inventar números**: capacidade de tanque, tipo de aquecedor e dias de autonomia só entram quando o Dan confirmar.
 
 ## Fotos e vídeo
 
