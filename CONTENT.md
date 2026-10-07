@@ -6,6 +6,7 @@
 - **Trocas:** aceito até **1/3** do preço pedido em veículo equivalente.
 - **Videochamada sem compromisso** é opção explícita (hero, visitas e FAQ).
 - Pontos fortes em evidência: hidráulica com água quente, proteção térmica, vedação, motor/sistemas em bom funcionamento, madeira tratada, energia solar.
+- **Estante de livros:** destaque forte — linda estante; claim do anúncio: **a maior estante em motorhome da América Latina** (hero, fatos, galeria, capítulos, ficha e FAQ).
 - Onde está: Anitápolis, Santa Catarina. Visita também pode ser combinada em São José ou Florianópolis.
 - A página não afirma que o documento já é motorcasa. Isso se confirma no CRLV, na visita.
 
