@@ -2,9 +2,11 @@
 
 - **Preço pedido público: R$ 149.900**
 - O rascunho antigo de marketing citava R$ 182.000. Esse valor está aposentado e não entra na página, no título nem no texto de WhatsApp.
-- Veículo: Renault Master **2006**, **cerca de 600.000 km**
+- Veículo: Renault Master **2006**, quilometragem **cerca de 600.000 km** (aparece na ficha, de forma factual — não como refrão de defeito).
+- **Trocas:** aceito até **1/3** do preço pedido em veículo equivalente.
+- **Videochamada sem compromisso** é opção explícita (hero, visitas e FAQ).
+- Pontos fortes em evidência: hidráulica com água quente, proteção térmica, vedação, motor/sistemas em bom funcionamento, madeira tratada, energia solar.
 - Onde está: Anitápolis, Santa Catarina. Visita também pode ser combinada em São José ou Florianópolis.
-- Ano e quilometragem aparecem no topo, de propósito.
 - A página não afirma que o documento já é motorcasa. Isso se confirma no CRLV, na visita.
 
 ## Fotos e vídeo

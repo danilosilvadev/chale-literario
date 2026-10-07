@@ -398,6 +398,23 @@ h3 {
   font-size: 0.98rem;
 }
 
+.price-note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.hero-callout {
+  margin-top: 0.95rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-sand) 70%, white);
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -803,8 +820,39 @@ td {
   margin-top: 1.25rem;
 }
 
+.map-card {
+  margin-top: 1.25rem;
+}
+
+.map-embed {
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow);
+  aspect-ratio: 16 / 11;
+  max-width: 100%;
+}
+
+.map-embed iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  border: 0;
+}
+
 .map-line {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
+}
+
+.places-highlight {
+  border-color: color-mix(in srgb, var(--wood) 35%, var(--line));
+  background: color-mix(in srgb, var(--bg-sand) 55%, white);
+}
+
+.places-highlight h3 {
+  color: #3f2a1d;
 }
 
 .form-card {

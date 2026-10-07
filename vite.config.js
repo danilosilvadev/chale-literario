@@ -58,7 +58,7 @@ export function readSiteConfig(mode = 'production') {
 }
 
 function applyConfig(html, cfg) {
-  const waText = `Olá! Vi o anúncio da Renault Master ${cfg.year} (${cfg.kilometersLabel}) em Anitápolis/SC. Preço pedido ${cfg.priceLabel}. Quero saber mais e combinar uma visita.`
+  const waText = `Olá! Vi o anúncio da Renault Master ${cfg.year} em Anitápolis/SC. Preço pedido ${cfg.priceLabel}. Quero saber mais — pode ser visita ou videochamada sem compromisso.`
   const waHref = `https://wa.me/${cfg.whatsappNumber}?text=${encodeURIComponent(waText)}`
   const notice = cfg.whatsappIsPlaceholder
     ? `<p class="config-notice" role="status">WhatsApp ainda é o número de exemplo. Antes de divulgar, edite <code>site.config.json</code> ou defina <code>WHATSAPP_NUMBER</code>.</p>`

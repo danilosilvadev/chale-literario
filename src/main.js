@@ -67,8 +67,8 @@ function setupReveal() {
 
   const phone = window.matchMedia('(max-width: 899px)').matches
   const selector = phone
-    ? '.section-head, .facts-list, .truths, .chapters, .gallery, .walkthrough, .sources, .battery, .table-wrap, .faq, .places, .form-card, .footer-grid'
-    : '.section-head, .facts-list > li, .truths > li, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .table-wrap, .faq details, .places > li, .form-card, .footer-grid > div'
+    ? '.section-head, .facts-list, .truths, .chapters, .gallery, .walkthrough, .sources, .battery, .table-wrap, .faq, .places, .map-card, .form-card, .footer-grid'
+    : '.section-head, .facts-list > li, .truths > li, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .table-wrap, .faq details, .places > li, .map-card, .form-card, .footer-grid > div'
   const nodes = [...document.querySelectorAll(selector)]
   if (!nodes.length) return
 
@@ -194,7 +194,7 @@ form?.addEventListener('submit', (event) => {
   const quando = clean(form.quando.value, 80)
 
   if (!nome || !cidade || !quando) {
-    showFormError('Preencha nome, cidade e quando você pode visitar.')
+    showFormError('Preencha nome, cidade e quando / formato (visita ou videochamada).')
     if (!nome) form.nome.focus()
     else if (!cidade) form.cidade.focus()
     else form.quando.focus()
@@ -208,11 +208,11 @@ form?.addEventListener('submit', (event) => {
   }
 
   const text = [
-    `Olá! Vi o motorhome Renault Master ${year} em Anitápolis (${km}, preço pedido ${price}).`,
+    `Olá! Vi o motorhome Renault Master ${year} em Anitápolis (preço pedido ${price}).`,
     '',
     `Nome: ${nome}`,
     `Cidade: ${cidade}`,
-    `Quando posso visitar: ${quando}`,
+    `Quando / formato: ${quando}`,
   ].join('\n')
 
   const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`
