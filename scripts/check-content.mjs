@@ -28,6 +28,14 @@ if (!html.includes(String(config.whatsappNumber).replace(/\D/g, ''))) {
   fail('WhatsApp ausente no HTML')
 }
 
+if (/5500000000000|wa\.me\/550+(?!\d)/.test(html)) fail('WhatsApp placeholder 5500000000000 no HTML')
+if (/5500000000000/.test(JSON.stringify(config))) fail('site.config.json ainda com o placeholder 5500000000000')
+if (!html.includes(`wa.me/${String(config.whatsappNumber).replace(/\D/g, '')}?text=`)) {
+  fail('links wa.me sem o número do site.config.json ou sem mensagem pronta')
+}
+if (html.includes('config-notice')) fail('aviso de número de exemplo ainda aparece')
+if (!/\(\d{2}\) \d{4,5}-\d{4}/.test(html)) fail('número de WhatsApp visível ausente, formato (51) 99202-2580')
+
 const labelDigits = String(config.priceLabel).replace(/\D/g, '')
 if (!labelDigits.includes(String(config.priceAmount))) {
   fail('priceLabel e priceAmount divergem em site.config.json')

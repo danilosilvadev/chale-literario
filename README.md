@@ -67,9 +67,9 @@ Edite `site.config.json`:
 
 ## WhatsApp
 
-O número publicado hoje é o placeholder **5500000000000**. Não é um telefone real. Enquanto ele estiver assim, a página mostra um aviso no topo e pede para os buscadores não indexarem.
+O número publicado é o WhatsApp do Dan, **(51) 99202-2580** (`5551992022580`). Ele aparece visível no hero, em Visitas e no rodapé, e todos os links `wa.me` levam a mensagem pronta. O `check-content` falha se o antigo número de exemplo voltar.
 
-Use só dígitos, com DDI 55 (exemplo real: `5548999999999`).
+Use só dígitos, com DDI 55 (ex.: `5551992022580`).
 
 Há duas formas. A primeira que existir, e não estiver vazia, ganha:
 
@@ -83,7 +83,7 @@ cp .env.example .env
 No `.env`:
 
 ```bash
-WHATSAPP_NUMBER=5500000000000
+WHATSAPP_NUMBER=5551992022580
 ```
 
 Troque pelo número de verdade e rode `npm run dev` ou `npm run build` de novo. O botão e o formulário abrem `https://wa.me/` com uma mensagem pronta. O formulário (nome, cidade, quando pode visitar) não envia dados para servidor nenhum: só monta o texto no navegador.

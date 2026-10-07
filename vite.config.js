@@ -53,8 +53,14 @@ export function readSiteConfig(mode = 'production') {
     kilometersLabel: String(file.kilometersLabel),
     kilometersValue,
     whatsappNumber,
-    whatsappIsPlaceholder: whatsappNumber === '5500000000000',
+    whatsappIsPlaceholder: /^55(0+)$/.test(whatsappNumber),
+    whatsappDisplay: formatBrazilPhone(whatsappNumber),
   }
+}
+
+function formatBrazilPhone(digits) {
+  const m = String(digits).match(/^55(\d{2})(\d{4,5})(\d{4})$/)
+  return m ? `(${m[1]}) ${m[2]}-${m[3]}` : `+${digits}`
 }
 
 function applyConfig(html, cfg) {
@@ -75,6 +81,7 @@ function applyConfig(html, cfg) {
     ['__YEAR__', String(cfg.year)],
     ['__WA_HREF__', waHref],
     ['__WHATSAPP__', cfg.whatsappNumber],
+    ['__WA_DISPLAY__', escapeHtml(cfg.whatsappDisplay)],
     ['__CONFIG_NOTICE__', notice],
     ['__ROBOTS__', robots],
   ]

@@ -1850,3 +1850,15 @@ input::placeholder {
     animation: flame-flicker 2.4s ease-in-out 0.6s 2;
   }
 }
+
+.wa-number {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+}
+
+.footer-wa {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
