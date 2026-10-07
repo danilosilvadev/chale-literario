@@ -7,7 +7,7 @@
 - **Videochamada sem compromisso** é opção explícita (hero, visitas e FAQ).
 - Pontos fortes em evidência: hidráulica com água quente, proteção térmica, vedação, motor/sistemas em bom funcionamento, madeira tratada, energia solar.
 - **Estante de livros:** destaque forte — linda estante; claim do anúncio: **a maior estante em motorhome da América Latina** (hero, fatos, galeria, capítulos, ficha e FAQ).
-- Onde está: Anitápolis, Santa Catarina. Visita também pode ser combinada em São José ou Florianópolis.
+- Onde está: Anitápolis, Santa Catarina. **Visita presencial só em Anitápolis** — o interessado vem até a casa; o vendedor não vai ao comprador nem marca ponto em São José/Florianópolis. Videochamada sem compromisso continua ok como prévia remota.
 - A página não afirma que o documento já é motorcasa. Isso se confirma no CRLV, na visita.
 
 ## Fotos e vídeo
