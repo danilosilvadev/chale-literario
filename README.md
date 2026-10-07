@@ -1,6 +1,6 @@
 # A casa que escolhe sua vista
 
-Página estática, em português, do motorhome à venda: Renault Master 2006, cerca de 600.000 km, em Anitápolis (SC). O preço pedido é **R$ 149.900**.
+Página estática, em português, do motorhome à venda: Renault Master 2006, cerca de 600.000 km com motor refeito aos 550 mil km (apenas ~50 mil km desde a retífica), em Anitápolis (SC). O preço pedido é **R$ 139.900**.
 
 Não é um gerenciador de conteúdo. O texto mora no `index.html`. Preço, ano, quilometragem e WhatsApp saem do `site.config.json` na hora do build. Fotos ainda são placeholders — veja `CONTENT.md`.
 
@@ -58,8 +58,8 @@ Edite `site.config.json`:
 
 ```json
 {
-  "priceLabel": "R$ 149.900",
-  "priceAmount": 149900
+  "priceLabel": "R$ 139.900",
+  "priceAmount": 139900
 }
 ```
 

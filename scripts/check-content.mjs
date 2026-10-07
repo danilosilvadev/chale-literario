@@ -33,7 +33,7 @@ if (!labelDigits.includes(String(config.priceAmount))) {
   fail('priceLabel e priceAmount divergem em site.config.json')
 }
 
-const banned = ['182.000', '182000', 'R$ 182', '182 mil']
+const banned = ['182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900']
 for (const term of banned) {
   if (html.includes(term)) fail(`valor aposentado encontrado no HTML: ${term}`)
 }
@@ -45,6 +45,8 @@ for (const phrase of [
   'São José',
   'Florianópolis',
   'placeholder',
+  'motor refeito aos 550 mil km',
+  'FIPE até R$ 50 mil',
 ]) {
   if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
 }
