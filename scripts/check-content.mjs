@@ -56,10 +56,13 @@ for (const phrase of [
   'a maior estante em motorhome da América Latina',
   'maps.google.com/maps?q=Anit',
   '210 L',
-  'aquecedor a gás com misturador',
+  'aquecedor Lorenzetti a gás (GLP) com misturador',
+  'quebra-onda',
+  'Freedom DF4001 240 Ah (720 Ah no total)',
+  'LZ 750BP',
   'baterias estacionárias Freedom',
   'Inversor 220 V',
-  'Resfriar 12 V',
+  'Resfriar 67 L 12/24 V',
 ]) {
   if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
 }
@@ -71,9 +74,22 @@ if (/src="\/assets\/|href="\/assets\//.test(html)) {
   fail('caminho absoluto /assets quebra a página num repositório GitHub Pages')
 }
 
-if (/<img\b/i.test(html)) {
-  fail('o HTML não deve ter <img>. Fotos reais entram por src/media-slots.js')
+// <img> só na seção Equipamentos (imagens de referência do fabricante, em public/equipamentos/).
+// Fotos reais da van continuam entrando por src/media-slots.js.
+const imgs = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0])
+for (const tag of imgs) {
+  const src = tag.match(/\ssrc="([^"]+)"/)?.[1] || ''
+  if (!src.startsWith('./equipamentos/')) fail(`<img> fora de ./equipamentos/: ${src || tag}`)
+  else if (!fs.existsSync(path.join(project, 'public', src.slice(2)))) fail(`imagem ausente: ${src}`)
+  if (!/\sloading="lazy"/.test(tag)) fail(`<img> sem loading="lazy": ${src}`)
+  if (!/\salt="[^"]+"/.test(tag)) fail(`<img> sem alt: ${src}`)
+  if (!/\swidth="\d+"/.test(tag) || !/\sheight="\d+"/.test(tag)) fail(`<img> sem width/height: ${src}`)
 }
+if (!html.includes('id="equipamentos"')) fail('seção Equipamentos ausente')
+if (!html.includes('Foto ilustrativa do modelo instalado')) fail('legenda "Foto ilustrativa do modelo instalado" ausente')
+const equipCards = (html.match(/class="equip-card[" ]/g) || []).length
+const equipNotes = (html.match(/class="equip-note"/g) || []).length
+if (equipCards < 8 || equipNotes !== equipCards) fail(`Equipamentos: ${equipCards} cards e ${equipNotes} legendas (cada card precisa da legenda)`)
 if (/<video\b/i.test(html)) {
   fail('o HTML não deve ter <video> fixo. O walkthrough entra por src/media-slots.js')
 }
