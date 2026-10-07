@@ -33,7 +33,7 @@ if (!labelDigits.includes(String(config.priceAmount))) {
   fail('priceLabel e priceAmount divergem em site.config.json')
 }
 
-const banned = ['182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900']
+const banned = ['182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900', '680 Ah']
 for (const term of banned) {
   if (html.includes(term)) fail(`valor aposentado encontrado no HTML: ${term}`)
 }
@@ -55,6 +55,11 @@ for (const phrase of [
   'Pronta para viajar pela América Latina',
   'a maior estante em motorhome da América Latina',
   'maps.google.com/maps?q=Anit',
+  '210 L',
+  'aquecedor a gás com misturador',
+  'baterias estacionárias Freedom',
+  'Inversor 220 V',
+  'Resfriar 12 V',
 ]) {
   if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
 }

@@ -11,7 +11,8 @@
 - Onde está: Anitápolis, Santa Catarina. **Visita presencial só em Anitápolis** — o interessado vem até a casa; o vendedor não vai ao comprador nem marca ponto em São José/Florianópolis. Videochamada sem compromisso continua ok como prévia remota.
 - **Documentação (confirmado pelo Dan em 07/10/2026):** documentada como **motorcasa** no CRLV; em dia, **sem dívidas**; **revisada**; **pronta para viajar pela América Latina**. Selos no hero, linha "Documentação"/"Estado" na ficha, FAQ e rodapé.
 - **Narrativa (out/2026): "motorhome cabana aconchegante".** Hero: "Uma cabana aconchegante sobre rodas". A estante é o coração da casa: pinus tratado, luz quente em quatro camadas, livros, quarto traseiro com a vista entrando pelas portas.
-- **Independência energética e de água** (seção `#energia`): sol 310 W + alternador + tomada no mesmo banco (~680 Ah), hidráulica completa com água a bordo e água quente, banheiro naval. **Sem inventar números**: capacidade de tanque, tipo de aquecedor e dias de autonomia só entram quando o Dan confirmar.
+- **Independência energética e de água** (seção `#energia`), fatos confirmados pelo Dan em 07/10/2026: sol 310 W + alternador + tomada; **3 baterias estacionárias Freedom grandes (~50 kg cada) + bateria do motor 110 Ah** (o antigo "~680 Ah" saiu porque não dá para confirmar o total); **inversor 220 V**; **tanque de água limpa de 210 L**, bomba de vazão forte, enche com mangueira; **aquecedor a gás com misturador** (banho quente fora do camping é verdade); **geladeira Resfriar 12 V para motorhome, 67 L**; **dorme 3** (cama de casal + cama de solteiro). Autonomia: sem número de dias; usar o exemplo real "notebook o dia todo e climatizador Resfriar a noite inteira".
+- **Revisada:** dizer só "revisada" (sem data, sem detalhar o tipo de revisão). **Nunca** afirmar que já viajou para fora do Brasil; "pronta para viajar pela América Latina" vale pela documentação.
 
 ## Fotos e vídeo
 
