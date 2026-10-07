@@ -30,13 +30,13 @@ Quando as fotos existirem, o caminho está em `public/media/README.md` e `src/me
 
 ## Equipamentos (seção `#equipamentos`)
 
-Imagens de referência, separadas da galeria de fotos reais (que segue com placeholders até chegarem as fotos do Dan). Arquivos em `public/equipamentos/`, WebP, `loading="lazy"`. Cada card tem legenda: **"Foto ilustrativa do modelo instalado"** (modelo confirmado), **"Imagem ilustrativa · linha Resfriar"** (linha confirmada, modelo exato não) ou **"Imagem ilustrativa · ícone"** (sem foto).
+Imagens de referência, separadas da galeria de fotos reais (que segue com placeholders até chegarem as fotos do Dan). Arquivos em `public/equipamentos/`, WebP, `loading="lazy"`. Cada card tem legenda: **"Foto ilustrativa do modelo instalado"** (modelo confirmado), **"Imagem ilustrativa · ícone"** (sem foto).
 
 | Card | Arquivo | Fonte da imagem |
 | --- | --- | --- |
 | 3 baterias Freedom DF4001 240 Ah (720 Ah) | `bateria-freedom-df4001.webp` | Site oficial Freedom (Clarios): https://www.freedomestacionaria.com.br/components/card/df4100.png, card da página https://www.freedomestacionaria.com.br/produtos. O site lista a DF4100, sucessora da DF4001 (mesma família 240 Ah C100; a etiqueta da foto mostra DF4001). Referência do Dan: https://www.mercadolivre.com.br/bateria-estacionaria-freedom-df4001-12v-240ah/up/MLBU1368531455 |
 | Geladeira Resfriar 67 L 12/24 V | `geladeira-resfriar-67l.webp` | Site oficial Resfriar, RESGED67 (12/24 VDC, caminhão/motorhome): https://www.resfriar.com.br/produto/geladeira-67-litros-externa, imagem https://resfriar.com.br/images/produtos/a939eb423467a487498def982e21a8cf.png. Referência do Dan: https://www.mercadolivre.com.br/geladeira-caminhao-resfriar-67-litros-bivolt-1224v/up/MLBU1754018119 |
-| Climatizador Resfriar (topo de linha) | `climatizador-resfriar.webp` | Site oficial Resfriar, Série 8 Inspire (topo de linha atual): https://www.resfriar.com.br/produto/climatizador-serie-8-inspire-s8-inspire, imagem https://resfriar.com.br/images/produtos/bbb90b709288471895eab16779a81ef5.png. **Modelo exato do Dan não confirmado**, por isso a legenda "Imagem ilustrativa · linha Resfriar". |
+| Climatizador Resfriar (topo de linha) | (ícone) | Modelo exato não confirmado; card só com ícone, sem modelo específico (decisão do Dan, 07/10/2026). Se o Dan confirmar o modelo, a Série 8 Inspire tem foto oficial em https://www.resfriar.com.br/produto/climatizador-serie-8-inspire-s8-inspire |
 | Aquecedor Lorenzetti a gás (GLP) com misturador | `aquecedor-lorenzetti-lz750bp.webp` | Site oficial Lorenzetti: https://www.lorenzetti.com.br/produto/lz-750bp, imagem https://www.lorenzetti.com.br/images/default-source/produtos-png/aquecedores-a-gas/lz-750-bp.png. Referência do Dan: https://www.mercadolivre.com.br/aquecedor-a-gas-glp-lorenzetti-lz750bp-exaustao-natural/up/MLBU1719948014 |
 | Inversor 220 V | (ícone) | Marca/modelo não informados. |
 | Bomba d'água de vazão forte | (ícone) | Marca/modelo não informados. |

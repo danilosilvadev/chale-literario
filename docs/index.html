@@ -140,6 +140,11 @@
           <path d="M5 5h14l2 10H3z" /><path d="M4 10h16M9.7 5l-.7 10M14.3 5l.7 10M12 15v4M8 19h8" />
         </g>
       </symbol>
+      <symbol id="icon-fan" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7" />
+        </g>
+      </symbol>
       <symbol id="icon-moon" viewBox="0 0 24 24">
         <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19.5 14.6A7.8 7.8 0 0 1 9.4 4.5a7.8 7.8 0 1 0 10.1 10.1z" />
@@ -763,11 +768,11 @@
               <p class="equip-spec">Modelo caminhão/motorhome · bivolt</p>
               <p>Comida e bebida geladas direto das baterias, sem gás e sem tomada.</p>
             </li>
-            <li class="equip-card">
-              <figure class="equip-media">
-                <img src="./equipamentos/climatizador-resfriar.webp" width="800" height="451" loading="lazy" decoding="async" alt="Climatizador evaporativo de teto Resfriar, imagem de referência do fabricante" />
-                <figcaption class="equip-note">Imagem ilustrativa · linha Resfriar</figcaption>
-              </figure>
+            <li class="equip-card equip-card--icon">
+              <div class="equip-media equip-media--icon">
+                <span class="equip-glyph" aria-hidden="true"><svg class="icon"><use href="#icon-fan" /></svg></span>
+                <span class="equip-note">Imagem ilustrativa · ícone</span>
+              </div>
               <h3>Climatizador Resfriar</h3>
               <p class="equip-spec">Evaporativo · topo de linha</p>
               <p>Noite fresca na cabana: roda a noite inteira pelas baterias.</p>
