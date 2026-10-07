@@ -33,7 +33,7 @@ if (!labelDigits.includes(String(config.priceAmount))) {
   fail('priceLabel e priceAmount divergem em site.config.json')
 }
 
-const banned = ['182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900', '680 Ah']
+const banned = ['182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900', '680 Ah', 'refletivo térmico', 'anti-ruído']
 for (const term of banned) {
   if (html.includes(term)) fail(`valor aposentado encontrado no HTML: ${term}`)
 }
@@ -58,6 +58,7 @@ for (const phrase of [
   '210 L',
   'aquecedor Lorenzetti a gás (GLP) com misturador',
   'quebra-onda',
+  'Isolamento triplo: massa antirruído + manta térmica + 3TC',
   'Freedom DF4001 240 Ah (720 Ah no total)',
   'LZ 750BP',
   'baterias estacionárias Freedom',
@@ -89,7 +90,7 @@ if (!html.includes('id="equipamentos"')) fail('seção Equipamentos ausente')
 if (!html.includes('Foto ilustrativa do modelo instalado')) fail('legenda "Foto ilustrativa do modelo instalado" ausente')
 const equipCards = (html.match(/class="equip-card[" ]/g) || []).length
 const equipNotes = (html.match(/class="equip-note"/g) || []).length
-if (equipCards < 8 || equipNotes !== equipCards) fail(`Equipamentos: ${equipCards} cards e ${equipNotes} legendas (cada card precisa da legenda)`)
+if (equipCards < 9 || equipNotes !== equipCards) fail(`Equipamentos: ${equipCards} cards e ${equipNotes} legendas (cada card precisa da legenda)`)
 if (/<video\b/i.test(html)) {
   fail('o HTML não deve ter <video> fixo. O walkthrough entra por src/media-slots.js')
 }

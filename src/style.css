@@ -1830,11 +1830,7 @@ input::placeholder {
   }
 }
 
-@media (min-width: 1100px) {
-  .equip-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
+
 
 @media (prefers-reduced-motion: no-preference) {
   html.js .reveal .equip-media img,

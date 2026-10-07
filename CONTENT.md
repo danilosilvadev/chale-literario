@@ -6,7 +6,7 @@
 - **Trocas:** aceito **carro com FIPE até R$ 50 mil como parte do pagamento**; o restante em dinheiro/transferência. (Substitui a antiga regra "até 1/3 em veículo equivalente".) Destaque no hero/preço, fatos, ficha, seção de preço e FAQ.
 - **Videochamada sem compromisso** é opção explícita (hero, visitas e FAQ).
 - **Motor refeito aos 550 mil km — apenas ~50 mil km desde a retífica:** destaque mecânico (hero, fatos, veículo, ficha, preço e FAQ).
-- Pontos fortes em evidência: hidráulica com água quente, proteção térmica, vedação, motor/sistemas em bom funcionamento, madeira tratada, energia solar.
+- Pontos fortes em evidência: hidráulica com água quente, **Isolamento triplo: massa antirruído + manta térmica + 3TC** (confirmado pelo Dan em 07/10/2026; substitui a descrição antiga "manta/refletivo/lã"), vedação, motor/sistemas em bom funcionamento, madeira tratada, energia solar.
 - **Estante de livros:** destaque forte — linda estante; claim do anúncio: **a maior estante em motorhome da América Latina** (hero, fatos, galeria, capítulos, ficha e FAQ).
 - Onde está: Anitápolis, Santa Catarina. **Visita presencial só em Anitápolis** — o interessado vem até a casa; o vendedor não vai ao comprador nem marca ponto em São José/Florianópolis. Videochamada sem compromisso continua ok como prévia remota.
 - **Documentação (confirmado pelo Dan em 07/10/2026):** documentada como **motorcasa** no CRLV; em dia, **sem dívidas**; **revisada**; **pronta para viajar pela América Latina**. Selos no hero, linha "Documentação"/"Estado" na ficha, FAQ e rodapé.
@@ -42,3 +42,4 @@ Imagens de referência, separadas da galeria de fotos reais (que segue com place
 | Bomba d'água de vazão forte | (ícone) | Marca/modelo não informados. |
 | Tanque de 210 L com quebra-onda | (ícone, por enquanto) | Modelo confirmado pelo Dan (https://www.mercadolivre.com.br/caixa-d-agua-210-l-p-motorhome-c-quebra-onda-e-conexao-12/up/MLBU1730285061), mas o Mercado Livre bloqueia o download automático. Para trocar: salvar a foto do produto em `public/equipamentos/tanque-210l-quebra-onda.webp` (~800 px), trocar o ícone por `<img ... loading="lazy">` e a legenda por "Foto ilustrativa do modelo instalado". |
 | Placa solar 310 W | (ícone) | Marca/modelo não informados. |
+| Isolamento triplo | (ícone) | Massa antirruído + manta térmica + 3TC; sem foto de fabricante. |
