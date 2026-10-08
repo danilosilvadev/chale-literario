@@ -52,6 +52,9 @@ const banned = [
   'gov.br', 'google.com/maps', 'maps.google', 'Abrir Anitápolis no Google Maps', '<iframe',
   // redação negativa / repetição cortada na auditoria
   'linda estante', 'não marcamos', 'mais embaixo', 'Chamar no WhatsApp',
+  // sem custo de construção / investimento do dono (decisão do Dan, out/2026)
+  'Investimento do dono', 'nvestimento', 'nvesti', 'R$ 100 mil', '100 mil', 'R$ 100.000', '100.000',
+  'mão de obra', 'meses de obra', 'do zero', 'custo para montar', 'custo de reproduzir',
 ]
 for (const term of banned) {
   if (html.includes(term)) fail(`termo bloqueado encontrado no HTML: ${term}`)
@@ -100,7 +103,6 @@ for (const phrase of [
   'Anúncio oficial único',
   'nunca peço sinal',
   'R$ 169.900',
-  '~R$ 100 mil',
   'Receba fotos e o tour em vídeo no WhatsApp',
 ]) {
   if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)

@@ -59,7 +59,7 @@ Se o link tiver `?utm_source=olx` (ou `?ref=olx`), o `src/main.js` acrescenta " 
 
 - R$ 139.900 (pedido).
 - **R$ 169.900: mediana de 39 motorhomes comparáveis à venda** (levantamento de anúncios ativos, out/2026, em `/workspace/motorhome-sell-chances-report.md`).
-- **~R$ 100 mil: investimento do dono só na conversão** (informado pelo Dan; estimativa, sem mão de obra). Não somar com FIPE do chassi nem inventar "custo para construir".
+- **Sem investimento do dono / custo de construção** (decisão do Dan, 07/10/2026): o bloco "~R$ 100 mil na conversão" saiu da página, e o check bloqueia "Investimento do dono", "100 mil", "mão de obra", "do zero" e afins. A âncora fica só no preço vs. mediana (R$ 30 mil abaixo).
 
 ## Saídas da página
 
