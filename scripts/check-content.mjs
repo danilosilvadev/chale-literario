@@ -9,8 +9,8 @@ const gallery = JSON.parse(fs.readFileSync(path.join(project, 'src/data/gallery.
 const inventory = JSON.parse(fs.readFileSync(path.join(project, 'src/data/inventory.json'), 'utf8'))
 const number = String(config.whatsappNumber).replace(/\D/g, '')
 const siteUrl = String(config.siteUrl || '').replace(/\/?$/, '/')
-if (siteUrl !== 'https://vistasobrerodas.com/chale-literario/') {
-  fail(`siteUrl deve ser https://vistasobrerodas.com/chale-literario/ (tem "${siteUrl}")`)
+if (siteUrl !== 'https://vistasobrerodas.com.br/chale-literario/') {
+  fail(`siteUrl deve ser https://vistasobrerodas.com.br/chale-literario/ (tem "${siteUrl}")`)
 }
 
 let page = ''
@@ -42,7 +42,7 @@ const banned = [
   // sem custo de construção / investimento do dono (decisão do Dan, out/2026)
   'Investimento do dono', 'nvestimento', 'nvesti', 'R$ 100 mil', '100 mil', 'R$ 100.000', '100.000',
   'mão de obra', 'meses de obra', 'do zero', 'custo para montar', 'custo de reproduzir',
-  // URL antiga do GitHub Pages (domínio novo: vistasobrerodas.com/chale-literario)
+  // URL antiga do GitHub Pages (domínio novo: vistasobrerodas.com.br/chale-literario)
   'danilosilvadev.github.io/motorhome-venda', 'github.io/motorhome-venda',
 ]
 
@@ -59,6 +59,7 @@ function commonChecks(html, { minWa }) {
   for (const term of banned) {
     if (html.includes(term)) fail(`termo bloqueado: ${term}`)
   }
+  if (/vistasobrerodas\.com(?!\.br)/.test(html)) fail('domínio errado: use vistasobrerodas.com.br (o .com não existe)')
 
   const visible = html
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')

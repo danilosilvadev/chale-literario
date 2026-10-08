@@ -6,11 +6,11 @@ Não é um gerenciador de conteúdo. O texto mora no `index.html`. Preço, ano, 
 
 ## No ar (GitHub Pages + domínio)
 
-URL pública: **https://vistasobrerodas.com/chale-literario/** (catálogo em `/chale-literario/catalogo.html`).
+URL pública: **https://vistasobrerodas.com.br/chale-literario/** (catálogo em `/chale-literario/catalogo.html`).
 
 O site é exportado em `docs/` com caminhos relativos (`base: './'` no Vite), então funciona nesse caminho de projeto e também no espelho `https://danilosilvadev.github.io/chale-literario/` enquanto o DNS do domínio customizado propaga.
 
-Pages deste repositório: branch `main`, pasta `/docs`. O site raiz `danilosilvadev.github.io` carrega o CNAME `vistasobrerodas.com` e redireciona `/` para `/chale-literario/`.
+Pages deste repositório: branch `main`, pasta `/docs`. O site raiz `danilosilvadev.github.io` redireciona `/` para `/chale-literario/`; o CNAME `vistasobrerodas.com.br` entra lá quando o DNS no Registro.br apontar para o GitHub.
 
 
 Cada mudança de texto, preço ou foto pede um build novo e um commit da pasta `docs/`:

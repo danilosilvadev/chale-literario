@@ -1,6 +1,6 @@
 # Conteúdo do anúncio
 
-- **URL pública:** https://vistasobrerodas.com/chale-literario/ (catálogo: /chale-literario/catalogo.html). Não usar mais danilosilvadev.github.io/motorhome-venda.
+- **URL pública:** https://vistasobrerodas.com.br/chale-literario/ (catálogo: /chale-literario/catalogo.html). Não usar mais danilosilvadev.github.io/motorhome-venda.
 - **Preço pedido público: R$ 139.900** (desde out/2026; antes R$ 149.900).
 - O rascunho antigo de marketing citava R$ 182.000. Esse valor está aposentado e não entra na página, no título nem no texto de WhatsApp.
 - Veículo: Renault Master **2006**, quilometragem **cerca de 600.000 km** (aparece na ficha, de forma factual — não como refrão de defeito). Sempre que a km aparecer, vem junto com o **motor refeito aos 550 mil km** (apenas ~50 mil km desde a retífica). Não mencionar notas/comprovantes.

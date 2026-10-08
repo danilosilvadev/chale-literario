@@ -58,7 +58,7 @@ export function readSiteConfig(mode = 'production') {
     whatsappDisplay: formatBrazilPhone(whatsappNumber),
     showGallery: file.showGallery === true,
     ownerPhoto: typeof file.ownerPhoto === 'string' && file.ownerPhoto.trim() ? file.ownerPhoto.trim() : null,
-    siteUrl: String(file.siteUrl || '').replace(/\/?$/, '/') || 'https://vistasobrerodas.com/chale-literario/',
+    siteUrl: String(file.siteUrl || '').replace(/\/?$/, '/') || 'https://vistasobrerodas.com.br/chale-literario/',
   }
 }
 
