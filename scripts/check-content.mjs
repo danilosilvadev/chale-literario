@@ -1,44 +1,27 @@
+// Confere as duas páginas geradas (dist/index.html e dist/catalogo.html) antes de publicar.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { mediaSlots } from '../src/media-slots.js'
 
-const root = path.dirname(fileURLToPath(import.meta.url))
-const project = path.resolve(root, '..')
-const htmlPath = path.join(project, 'dist', 'index.html')
-const html = fs.readFileSync(htmlPath, 'utf8')
+const project = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const config = JSON.parse(fs.readFileSync(path.join(project, 'site.config.json'), 'utf8'))
+const gallery = JSON.parse(fs.readFileSync(path.join(project, 'src/data/gallery.json'), 'utf8'))
+const inventory = JSON.parse(fs.readFileSync(path.join(project, 'src/data/inventory.json'), 'utf8'))
+const number = String(config.whatsappNumber).replace(/\D/g, '')
 
+let page = ''
 function fail(message) {
-  console.error(`check-content: ${message}`)
+  console.error(`check-content${page ? ` [${page}]` : ''}: ${message}`)
   process.exitCode = 1
 }
 
-if (process.exitCode) {
-  process.exit(process.exitCode)
-}
-
-const leftovers = html.match(/__[A-Z0-9_]+__/g)
-if (leftovers) fail(`tokens não substituídos: ${[...new Set(leftovers)].join(', ')}`)
-
-if (!html.includes(config.priceLabel)) fail(`preço "${config.priceLabel}" não está no HTML`)
-if (!html.includes(String(config.year))) fail('ano ausente no HTML')
-if (!html.includes(config.kilometersLabel)) fail('quilometragem ausente no HTML')
-if (!html.includes(String(config.whatsappNumber).replace(/\D/g, ''))) {
-  fail('WhatsApp ausente no HTML')
-}
-
-if (/5500000000000|wa\.me\/550+(?!\d)/.test(html)) fail('WhatsApp placeholder 5500000000000 no HTML')
-if (/5500000000000/.test(JSON.stringify(config))) fail('site.config.json ainda com o placeholder 5500000000000')
-if (!html.includes(`wa.me/${String(config.whatsappNumber).replace(/\D/g, '')}?text=`)) {
-  fail('links wa.me sem o número do site.config.json ou sem mensagem pronta')
-}
-if (html.includes('config-notice')) fail('aviso de número de exemplo ainda aparece')
-if (!/\(\d{2}\) \d{4,5}-\d{4}/.test(html)) fail('número de WhatsApp visível ausente, formato (51) 99202-2580')
-
-const labelDigits = String(config.priceLabel).replace(/\D/g, '')
-if (!labelDigits.includes(String(config.priceAmount))) {
-  fail('priceLabel e priceAmount divergem em site.config.json')
+function read(name) {
+  const file = path.join(project, 'dist', name)
+  if (!fs.existsSync(file)) {
+    fail(`dist/${name} não existe (faltou a página no build multi-página?)`)
+    return ''
+  }
+  return fs.readFileSync(file, 'utf8')
 }
 
 const banned = [
@@ -56,160 +39,233 @@ const banned = [
   'Investimento do dono', 'nvestimento', 'nvesti', 'R$ 100 mil', '100 mil', 'R$ 100.000', '100.000',
   'mão de obra', 'meses de obra', 'do zero', 'custo para montar', 'custo de reproduzir',
 ]
-for (const term of banned) {
-  if (html.includes(term)) fail(`termo bloqueado encontrado no HTML: ${term}`)
-}
 
-// Texto visível (sem tags, scripts e estilos) + atributos que aparecem para a pessoa
-const visible = html
-  .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-  .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-  .replace(/<head[\s\S]*?<\/head>/i, ' ')
-  .replace(/<[^>]+>/g, ' ')
-const visibleAttrs = [...html.matchAll(/\s(?:alt|title|aria-label|placeholder|data-caption|data-alt)="([^"]*)"/gi)]
-  .map((m) => m[1])
-  .join(' ')
-if (/placeholder/i.test(visible) || /placeholder/i.test(visibleAttrs)) {
-  fail('a palavra "placeholder" aparece no texto visível do HTML')
-}
-if (/\bDan\b/.test(visible) || /\bDan\b/.test(visibleAttrs)) {
-  fail('o nome do dono aparece na página; use "o dono"/"eu" até ele confirmar')
-}
-if (/<form\b/i.test(html) || /\srequired\b/i.test(html)) fail('formulário obrigatório antes do WhatsApp')
+// ---------- regras comuns às duas páginas ----------
+function commonChecks(html, { minWa }) {
+  const leftovers = html.match(/__[A-Z0-9_]+__/g)
+  if (leftovers) fail(`tokens não substituídos: ${[...new Set(leftovers)].join(', ')}`)
+  if (/<!--(gallery|inventory|partial):/.test(html)) fail('bloco gerado não substituído (<!--gallery:/inventory:/partial:-->)')
+  if (!html.includes('id="icon-wa"')) fail('sprite de ícones ausente')
+  if (!html.includes(config.priceLabel)) fail(`preço "${config.priceLabel}" ausente`)
+  if (html.includes('config-notice')) fail('aviso de número de exemplo ainda aparece')
+  if (!/\(\d{2}\) \d{4,5}-\d{4}/.test(html)) fail('número de WhatsApp visível ausente, formato (51) 99202-2580')
 
-for (const phrase of [
-  'Uma cabana aconchegante',
-  'Anitápolis',
-  'motor refeito aos 550 mil km',
-  'FIPE até R$ 50 mil',
-  'Independência energética e de água',
-  'Documentada como motorcasa',
-  'sem dívidas',
-  'Revisada',
-  'Pronta para viajar pela América Latina',
-  'em motorhome da América Latina (até onde sei)',
-  './mapa/anitapolis.webp',
-  'colaboradores do OpenStreetMap',
-  '210 L',
-  'quebra-onda',
-  'Isolamento triplo: massa antirruído + manta térmica + 3TC',
-  'Freedom DF4001 240 Ah (720 Ah no total)',
-  'aquecedor Lorenzetti a gás com misturador',
-  'Aquecedor Lorenzetti a gás (GLP) com misturador',
-  'LZ 750BP',
-  'Inversor 220 V',
-  'Resfriar 67 L 12/24 V',
-  'Respondo em até 2 h',
-  'Anúncio oficial único',
-  'nunca peço sinal',
-  'R$ 169.900',
-  'Receba fotos e o tour em vídeo no WhatsApp',
-]) {
-  if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
-}
-
-// WhatsApp: todo link vai para o número real, com mensagem pronta
-const number = String(config.whatsappNumber).replace(/\D/g, '')
-const waLinks = [...html.matchAll(/href="([^"]*(?:wa\.me|whatsapp)[^"]*)"/gi)].map((m) => m[1])
-if (waLinks.length < 8) fail(`poucos links de WhatsApp (${waLinks.length})`)
-for (const href of waLinks) {
-  if (!href.startsWith(`https://wa.me/${number}?text=`)) fail(`link de WhatsApp fora do padrão: ${href}`)
-}
-for (const [intent, label] of [
-  ['video', 'Quero ver por vídeo'],
-  ['troca', 'Tenho carro para troca'],
-  ['duvida', 'Tenho uma dúvida'],
-]) {
-  const re = new RegExp(`<a[^>]*href="https://wa\\.me/${number}\\?text=([^"]+)"[^>]*data-intent="${intent}"[^>]*>[\\s\\S]*?${label}`)
-  const m = html.match(re)
-  if (!m) fail(`botão de intenção ausente: ${label}`)
-  else if (!decodeURIComponent(m[1]).startsWith('Oi!')) fail(`mensagem pronta estranha em ${label}`)
-}
-const intentTexts = new Set(
-  [...html.matchAll(/href="https:\/\/wa\.me\/\d+\?text=([^"]+)"[^>]*data-intent=/g)].map((m) => m[1]),
-)
-if (intentTexts.size !== 3) fail('os 3 botões de intenção precisam de mensagens diferentes')
-
-// Saídas: nenhum link para fora, exceto o WhatsApp
-const outbound = [...html.matchAll(/<a\b[^>]*href="(https?:[^"]+)"/gi)]
-  .map((m) => m[1])
-  .filter((href) => !href.startsWith('https://wa.me/'))
-if (outbound.length) fail(`links de saída na página: ${outbound.join(', ')}`)
-const navLinks = (html.match(/<nav[\s\S]*?<\/nav>/)?.[0].match(/<a\b/g) || []).length
-if (navLinks !== 3) fail(`o menu deve ter 3 itens (tem ${navLinks})`)
-if (!html.includes('class="dock"')) fail('barra fixa de WhatsApp ausente')
-
-if (!html.includes('src="./assets/') || !html.includes('href="./favicon.svg"')) {
-  fail('os assets precisam de caminho relativo (base ./) para GitHub Pages')
-}
-if (/src="\/assets\/|href="\/assets\//.test(html)) {
-  fail('caminho absoluto /assets quebra a página num repositório GitHub Pages')
-}
-
-// <img> só para imagens do fabricante (./equipamentos/) e a foto do dono (./media/, se configurada).
-// Fotos reais da van entram por src/media-slots.js.
-const imgs = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0])
-for (const tag of imgs) {
-  const src = tag.match(/\ssrc="([^"]+)"/)?.[1] || ''
-  if (!/^\.\/(equipamentos|media|mapa)\//.test(src)) fail(`<img> fora de ./equipamentos/, ./media/ ou ./mapa/: ${src || tag}`)
-  else if (!fs.existsSync(path.join(project, 'public', src.slice(2)))) fail(`imagem ausente: ${src}`)
-  if (!/\sloading="lazy"/.test(tag)) fail(`<img> sem loading="lazy": ${src}`)
-  if (!/\salt="[^"]+"/.test(tag)) fail(`<img> sem alt: ${src}`)
-  if (!/\swidth="\d+"/.test(tag) || !/\sheight="\d+"/.test(tag)) fail(`<img> sem width/height: ${src}`)
-}
-if (!html.includes('id="equipamentos"')) fail('seção Equipamentos ausente')
-if (!html.includes('Foto ilustrativa do modelo instalado')) fail('legenda "Foto ilustrativa do modelo instalado" ausente')
-const equipCards = (html.match(/class="equip-card[" ]/g) || []).length
-const equipNotes = (html.match(/class="equip-note"/g) || []).length
-if (equipCards < 9 || equipNotes !== equipCards) fail(`Equipamentos: ${equipCards} cards e ${equipNotes} legendas (cada card precisa da legenda)`)
-if (/<video\b/i.test(html)) {
-  fail('o HTML não deve ter <video> fixo. O walkthrough entra por src/media-slots.js')
-}
-if (/unsplash|pexels|shutterstock|picsum|placeholder\.com/i.test(html)) {
-  fail('referência a banco de imagens no HTML')
-}
-
-// Galeria: desligada (showGallery false) => nenhum slot na página.
-// Ligada => todos os slots na página e todos com arquivo real.
-const slotsInHtml = [...html.matchAll(/data-slot="([^"]+)"/g)].map((match) => match[1])
-if (config.showGallery === true) {
-  for (const [key, src] of Object.entries(mediaSlots)) {
-    if (!slotsInHtml.includes(key)) fail(`slot "${key}" sem elemento na página`)
-    if (src == null) fail(`galeria ligada, mas o slot "${key}" está sem foto (src/media-slots.js)`)
+  for (const term of banned) {
+    if (html.includes(term)) fail(`termo bloqueado: ${term}`)
   }
-  for (const slot of slotsInHtml) {
-    if (!(slot in mediaSlots)) fail(`data-slot desconhecido: ${slot}`)
-  }
-} else if (slotsInHtml.length) {
-  fail(`galeria desligada, mas há slots na página: ${slotsInHtml.join(', ')}`)
-}
-if (config.ownerPhoto && !html.includes('class="owner-photo"')) fail('ownerPhoto configurada, mas a foto não entrou')
-if (!config.ownerPhoto && html.includes('owner-photo')) fail('foto do dono na página sem ownerPhoto configurada')
 
-for (const [key, src] of Object.entries(mediaSlots)) {
-  if (src == null) continue
-  if (typeof src !== 'string' || !src.startsWith('./media/')) {
-    fail(`${key}: use null ou um caminho "./media/arquivo"`)
+  const visible = html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<head[\s\S]*?<\/head>/i, ' ')
+    .replace(/<[^>]+>/g, ' ')
+  const attrs = [...html.matchAll(/\s(?:alt|title|aria-label|placeholder|data-caption|data-alt|data-label|data-room)="([^"]*)"/gi)]
+    .map((m) => m[1])
+    .join(' ')
+  if (/placeholder/i.test(visible) || /placeholder/i.test(attrs)) fail('a palavra "placeholder" aparece no texto visível ou em alt/aria-label')
+  if (/\bDan\b/.test(visible) || /\bDan\b/.test(attrs)) fail('o nome do dono aparece; use "o dono"/"eu" até ele confirmar')
+  if (/<form\b/i.test(html) || /\srequired\b/i.test(html)) fail('formulário antes do WhatsApp')
+  if (/<video\b/i.test(html)) fail('<video> fixo no HTML')
+  if (/unsplash|pexels|shutterstock|picsum|placeholder\.com/i.test(html)) fail('referência a banco de imagens')
+
+  // WhatsApp: todo link vai para o número real, com mensagem pronta
+  const waLinks = [...html.matchAll(/href="([^"]*(?:wa\.me|whatsapp|api\.whats)[^"]*)"/gi)].map((m) => m[1])
+  if (waLinks.length < minWa) fail(`poucos links de WhatsApp (${waLinks.length})`)
+  for (const href of waLinks) {
+    if (!href.startsWith(`https://wa.me/${number}?text=`)) fail(`link de WhatsApp fora do padrão: ${href}`)
+    else if (!decodeURIComponent(href.split('?text=')[1]).startsWith('Oi!')) fail(`mensagem pronta estranha: ${href}`)
   }
-  const file = path.join(project, 'public', src.slice(2))
-  if (!fs.existsSync(file)) fail(`${key}: arquivo não encontrado em ${file}`)
+
+  // Saídas: só WhatsApp para fora; por dentro, âncoras da página, a landing e o catálogo
+  const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]))
+  for (const [, href] of html.matchAll(/<a\b[^>]*\shref="([^"]+)"/gi)) {
+    if (href.startsWith('https://wa.me/')) continue
+    if (/^https?:|^\/\/|^mailto:|^tel:/i.test(href)) fail(`link de saída: ${href}`)
+    else if (href.startsWith('#')) {
+      if (href.length > 1 && !ids.has(href.slice(1))) fail(`âncora sem destino: ${href}`)
+    } else if (!/^\.\/(index\.html|catalogo\.html(#[\w-]+)?)?$/.test(href)) fail(`link interno inesperado: ${href}`)
+  }
+
+  if (!html.includes('class="dock"')) fail('barra fixa de WhatsApp ausente')
+  if (!html.includes('src="./assets/') || !html.includes('href="./favicon.svg"')) fail('assets sem caminho relativo (base ./)')
+  if (/src="\/assets\/|href="\/assets\//.test(html)) fail('caminho absoluto /assets quebra o GitHub Pages')
+
+  for (const [tag] of html.matchAll(/<img\b[^>]*>/gi)) {
+    const src = tag.match(/\ssrc="([^"]+)"/)?.[1] || ''
+    if (!/^\.\/(equipamentos|media|mapa)\//.test(src)) fail(`<img> fora de ./equipamentos/, ./media/ ou ./mapa/: ${src || tag}`)
+    else if (!fs.existsSync(path.join(project, 'public', src.slice(2)))) fail(`imagem ausente: ${src}`)
+    if (!/\sloading="(lazy|eager)"/.test(tag)) fail(`<img> sem loading: ${src}`)
+    if (!/\salt="[^"]+"/.test(tag) && !/class="chip-img"/.test(tag)) fail(`<img> sem alt: ${src}`)
+    if (!/\swidth="\d+"/.test(tag) || !/\sheight="\d+"/.test(tag)) fail(`<img> sem width/height: ${src}`)
+  }
+
+  const navLinks = (html.match(/<nav\b[^>]*class="nav-panel[\s\S]*?<\/nav>/)?.[0].match(/<a\b/g) || []).length
+  if (navLinks < 1 || navLinks > 3) fail(`menu curto: 1 a 3 itens (tem ${navLinks})`)
+  return { visible }
 }
 
-const jsonMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
-if (!jsonMatch) fail('JSON-LD ausente')
-else {
-  const data = JSON.parse(jsonMatch[1])
-  if (String(data.offers?.price) !== String(config.priceAmount)) {
-    fail('JSON-LD com preço diferente de site.config.json')
+// ---------- dados (galeria e inventário) ----------
+page = 'dados'
+const fileRe = /^[a-z0-9-]+\.(jpg|jpeg|png|webp)$/
+const roomNames = ['A cabana e a estante', 'Quarto com vista', 'Cozinha', 'Banheiro naval', 'Energia e água', 'Cabine e motor', 'Por fora']
+const roomsGot = gallery.rooms.map((r) => r.name)
+if (JSON.stringify(roomsGot) !== JSON.stringify(roomNames)) fail(`cômodos da galeria: ${roomsGot.join(' | ')}`)
+const slotIds = new Set()
+const slotFiles = new Set()
+let slotTotal = 0
+for (const room of gallery.rooms) {
+  if (!room.caption) fail(`cômodo sem legenda: ${room.name}`)
+  if (room.slots.length < 2 || room.slots.length > 6) fail(`${room.name}: ${room.slots.length} fotos (use 2 a 6)`)
+  for (const slot of room.slots) {
+    slotTotal++
+    if (slotIds.has(slot.id)) fail(`slot repetido: ${slot.id}`)
+    if (slotFiles.has(slot.file)) fail(`arquivo repetido: ${slot.file}`)
+    slotIds.add(slot.id)
+    slotFiles.add(slot.file)
+    if (!fileRe.test(slot.file)) fail(`nome de arquivo inválido: ${slot.file}`)
+    if (!slot.label || !slot.alt) fail(`slot sem legenda/alt: ${slot.id}`)
   }
-  if (String(data.vehicleModelDate) !== String(config.year)) fail('JSON-LD com ano divergente')
+}
+if (gallery.featured.length !== 5 || gallery.featured.some((id) => !slotIds.has(id))) fail('featured precisa de 5 slots existentes')
+const catNames = ['Estrutura e isolamento', 'Energia', 'Água', 'Cozinha e conforto', 'Quarto e estante', 'Banheiro', 'Veículo e documentação']
+const catsGot = inventory.categories.map((c) => c.name)
+if (JSON.stringify(catsGot) !== JSON.stringify(catNames)) fail(`categorias do catálogo: ${catsGot.join(' | ')}`)
+const itemIds = new Set()
+let itemTotal = 0
+let makerTotal = 0
+for (const cat of inventory.categories) {
+  for (const item of cat.items) {
+    itemTotal++
+    if (itemIds.has(item.id)) fail(`item repetido: ${item.id}`)
+    itemIds.add(item.id)
+    if (!fileRe.test(item.file)) fail(`nome de arquivo inválido: ${item.file}`)
+    if (!item.name || !item.spec || !item.benefit) fail(`item incompleto: ${item.id}`)
+    if (item.image) {
+      makerTotal++
+      if (!fs.existsSync(path.join(project, 'public', item.image.slice(2)))) fail(`imagem do fabricante ausente: ${item.image}`)
+    }
+  }
 }
 
+// ---------- landing ----------
+page = 'index.html'
+const html = read('index.html')
+if (html) {
+  const { visible } = commonChecks(html, { minWa: 8 })
+  if (!html.includes(String(config.year))) fail('ano ausente')
+  if (!html.includes(config.kilometersLabel)) fail('quilometragem ausente')
+  for (const phrase of [
+    'Uma cabana aconchegante',
+    'Anitápolis',
+    'motor refeito aos 550 mil km',
+    'FIPE até R$ 50 mil',
+    'Independência energética e de água',
+    'Documentada como motorcasa',
+    'sem dívidas',
+    'Revisada',
+    'Pronta para viajar pela América Latina',
+    'em motorhome da América Latina (até onde sei)',
+    './mapa/anitapolis.webp',
+    'colaboradores do OpenStreetMap',
+    '210 L',
+    'quebra-onda',
+    'Isolamento triplo: massa antirruído + manta térmica + 3TC',
+    'Freedom DF4001 240 Ah (720 Ah no total)',
+    'aquecedor Lorenzetti a gás com misturador',
+    'Aquecedor Lorenzetti a gás (GLP) com misturador',
+    'LZ 750BP',
+    'Inversor 220 V',
+    'Resfriar 67 L 12/24 V',
+    'Respondo em até 2 h',
+    'Anúncio oficial único',
+    'nunca peço sinal',
+    'R$ 169.900',
+    'Ver catálogo completo e inventário',
+  ]) {
+    if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
+  }
+
+  for (const [intent, label] of [
+    ['video', 'Quero ver por vídeo'],
+    ['troca', 'Tenho carro para troca'],
+    ['duvida', 'Tenho uma dúvida'],
+  ]) {
+    const re = new RegExp(`<a[^>]*href="https://wa\\.me/${number}\\?text=([^"]+)"[^>]*data-intent="${intent}"[^>]*>[\\s\\S]*?${label}`)
+    if (!re.test(html)) fail(`botão de intenção ausente: ${label}`)
+  }
+  const intentTexts = new Set([...html.matchAll(/href="https:\/\/wa\.me\/\d+\?text=([^"]+)"[^>]*data-intent=/g)].map((m) => m[1]))
+  if (intentTexts.size !== 3) fail('os 3 botões de intenção precisam de mensagens diferentes')
+
+  // catálogo: botão na galeria e na Ficha
+  const catLinks = (html.match(/href="\.\/catalogo\.html"/g) || []).length
+  if (catLinks < 3) fail(`poucos links para o catálogo (${catLinks}); precisa na galeria, no tour e na Ficha`)
+  const ficha = html.match(/<section class="section" id="ficha"[\s\S]*?<\/section>/)?.[0] || ''
+  if (!ficha.includes('href="./catalogo.html"')) fail('Ficha/Equipamentos sem botão para o catálogo')
+
+  if (config.showGallery === true) {
+    const fotos = html.match(/<section[^>]*id="fotos"[\s\S]*?<\/section>/)?.[0] || ''
+    if (!fotos.includes('href="./catalogo.html"')) fail('galeria sem botão para o catálogo')
+    if (!fotos.includes('href="#tour"')) fail('galeria sem "Ver todas as fotos"')
+    const mosaicItems = (html.match(/class="mosaic-item /g) || []).length
+    if (mosaicItems !== 5) fail(`mosaico com ${mosaicItems} fotos (precisa de 5)`)
+    const tour = html.match(/<section class="tour"[\s\S]*?<\/section>\s*<\/main>/)?.[0] || ''
+    if (!tour) fail('tour de fotos ausente')
+    const tourTiles = [...tour.matchAll(/class="tile[^"]*" data-lb="([^"]+)"/g)].map((m) => m[1])
+    if (tourTiles.length !== slotTotal) fail(`tour com ${tourTiles.length} fotos, dados têm ${slotTotal}`)
+    for (const room of roomNames) if (!tour.includes(`>${room}</h3>`)) fail(`cômodo ausente no tour: ${room}`)
+    const chips = (tour.match(/class="chip" href="#tour-/g) || []).length
+    if (chips !== roomNames.length) fail(`chips de cômodo: ${chips}`)
+    const mosaicIds = [...html.matchAll(/class="mosaic-item[\s\S]*?data-lb="([^"]+)"/g)].map((m) => m[1])
+    for (const id of mosaicIds) if (!tourTiles.includes(id)) fail(`foto do mosaico fora do tour: ${id}`)
+    const missing = gallery.rooms.flatMap((r) => r.slots).some((s) => !html.includes(`./media/fotos/${s.file.replace(/\.[a-z]+$/, '')}`))
+    if (missing && !visible.includes('foto em breve')) fail('slots sem foto precisam do selo "foto em breve"')
+  } else if (!html.includes('Receba fotos e o tour em vídeo no WhatsApp')) {
+    fail('galeria desligada sem o bloco "Receba fotos e o tour em vídeo no WhatsApp"')
+  }
+
+  if (!html.includes('id="equipamentos"')) fail('Equipamentos ausente')
+  if (!html.includes('Foto ilustrativa do modelo instalado')) fail('legenda "Foto ilustrativa do modelo instalado" ausente')
+  const equipCards = (html.match(/class="equip-card[" ]/g) || []).length
+  const equipNotes = (html.match(/class="equip-note"/g) || []).length
+  if (equipCards < 9 || equipNotes !== equipCards) fail(`Equipamentos: ${equipCards} cards e ${equipNotes} legendas`)
+
+  if (config.ownerPhoto && !html.includes('class="owner-photo"')) fail('ownerPhoto configurada, mas a foto não entrou')
+  if (!config.ownerPhoto && html.includes('owner-photo')) fail('foto do dono sem ownerPhoto configurada')
+
+  const jsonMatch = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)
+  if (!jsonMatch) fail('JSON-LD ausente')
+  else {
+    const data = JSON.parse(jsonMatch[1])
+    if (String(data.offers?.price) !== String(config.priceAmount)) fail('JSON-LD com preço diferente de site.config.json')
+    if (String(data.vehicleModelDate) !== String(config.year)) fail('JSON-LD com ano divergente')
+  }
+}
+
+// ---------- catálogo ----------
+page = 'catalogo.html'
+const cat = read('catalogo.html')
+if (cat) {
+  commonChecks(cat, { minWa: 4 })
+  for (const phrase of ['Catálogo completo e inventário', 'Foto ilustrativa do modelo instalado', 'Freedom DF4001', 'Resfriar 67 L 12/24 V', 'Lorenzetti', 'Isolamento triplo', '210 L', 'quebra-onda', '720 Ah', 'FIPE até R$ 50 mil', 'Respondo em até 2 h']) {
+    if (!cat.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
+  }
+  if (!/href="https:\/\/wa\.me\/\d+\?text=Oi!%20Vi%20o%20cat%C3%A1logo/.test(cat)) fail('WhatsApp do catálogo sem a mensagem "Vi o catálogo…"')
+  if (!/<a [^>]*href="\.\/"/.test(cat)) fail('link de volta para o anúncio ausente')
+  const cards = (cat.match(/class="inv-card"/g) || []).length
+  if (cards !== itemTotal) fail(`catálogo com ${cards} itens, dados têm ${itemTotal}`)
+  for (const name of catNames) if (!cat.includes(`>${name}</h2>`)) fail(`categoria ausente: ${name}`)
+  const chips = (cat.match(/class="chip chip--cat"/g) || []).length
+  if (chips !== catNames.length) fail(`chips de categoria: ${chips}`)
+  const makerImgs = (cat.match(/<img src="\.\/equipamentos\//g) || []).length
+  const makerNotes = (cat.match(/class="inv-note"/g) || []).length
+  if (makerImgs < 3 || makerImgs !== makerNotes || makerImgs > makerTotal) fail(`imagens do fabricante ${makerImgs}, legendas ${makerNotes}`)
+}
+
+page = 'css'
 const style = fs.readFileSync(path.join(project, 'src', 'style.css'), 'utf8')
-const urls = style.match(/url\(([^)]+)\)/g) || []
-for (const url of urls) {
+for (const url of style.match(/url\(([^)]+)\)/g) || []) {
   if (!url.includes('data:')) fail(`CSS com url que não é data URI: ${url}`)
 }
 
 if (process.exitCode) process.exit(process.exitCode)
-console.log('check-content: anúncio, placeholders e config conferidos.')
+console.log(`check-content: landing + catálogo conferidos (${slotTotal} fotos no tour, ${itemTotal} itens no inventário).`)

@@ -6,7 +6,7 @@ import '@fontsource/outfit/latin-400.css'
 import '@fontsource/outfit/latin-500.css'
 import '@fontsource/outfit/latin-600.css'
 import './style.css'
-import { mediaSlots } from './media-slots.js'
+import { setupGallery } from './gallery.js'
 
 const header = document.querySelector('.site-header')
 const toggle = document.querySelector('.nav-toggle')
@@ -67,8 +67,8 @@ function setupReveal() {
 
   const phone = window.matchMedia('(max-width: 899px)').matches
   const selector = phone
-    ? '.section-head, .facts-grid, .cta-block, .chapters, .gallery, .walkthrough, .sources, .battery, .indep-note, .anchor, .spec-groups, .faq, .intent-grid, .trust, .map-card, .footer-grid'
-    : '.section-head, .facts-grid > li, .cta-block, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .indep-note, .anchor > li, .spec-group, .faq details, .intent-grid, .trust, .map-card, .footer-grid > div'
+    ? '.section-head, .facts-grid, .cta-block, .chapters, .gallery-actions, .catalog-callout, .cat-hero, .sources, .battery, .indep-note, .anchor, .spec-groups, .faq, .intent-grid, .trust, .map-card, .footer-grid'
+    : '.section-head, .facts-grid > li, .cta-block, .chapter, .gallery-actions, .catalog-callout, .cat-hero, .sources > li, .battery, .indep-note, .anchor > li, .spec-group, .faq details, .intent-grid, .trust, .map-card, .footer-grid > div'
   const nodes = [...document.querySelectorAll(selector)]
   if (!nodes.length) return
 
@@ -103,63 +103,7 @@ function setupReveal() {
 
 setupReveal()
 
-function upgradeMedia() {
-  document.querySelectorAll('.media-slot').forEach((figure) => {
-    const src = mediaSlots[figure.dataset.slot]
-    if (!src) return
-
-    const placeholder = figure.querySelector('.media-placeholder')
-    if (!placeholder) return
-
-    const caption = figure.dataset.caption || ''
-    const alt = figure.dataset.alt || caption || 'Foto do motorhome'
-    const resolved = new URL(src, window.location.href).href
-    const isVideo = figure.dataset.kind === 'video'
-    const media = document.createElement(isVideo ? 'video' : 'img')
-
-    media.className = 'media-frame--photo'
-    if (isVideo) {
-      media.controls = true
-      media.playsInline = true
-      media.preload = 'metadata'
-      media.setAttribute('aria-label', alt)
-      media.src = resolved
-    } else {
-      media.alt = alt
-      media.decoding = 'async'
-      media.loading = figure.classList.contains('media-slot--hero') ? 'eager' : 'lazy'
-      if (figure.classList.contains('media-slot--hero')) {
-        media.setAttribute('fetchpriority', 'high')
-      }
-      media.src = resolved
-    }
-
-    media.addEventListener('error', () => {
-      const fallback = document.createElement('div')
-      fallback.className = 'media-placeholder media-frame--placeholder'
-      fallback.setAttribute('role', 'img')
-      const kicker = document.createElement('span')
-      kicker.className = 'media-kicker'
-      kicker.textContent = 'Foto'
-      const title = document.createElement('p')
-      title.className = 'media-title'
-      title.textContent = caption || 'Foto'
-      fallback.append(kicker, title)
-      media.replaceWith(fallback)
-    })
-
-    placeholder.replaceWith(media)
-    figure.classList.add('is-ready')
-
-    const cap = figure.querySelector('figcaption')
-    if (cap && caption) {
-      cap.textContent = caption
-      cap.classList.remove('visually-hidden')
-    }
-  })
-}
-
-upgradeMedia()
+setupGallery()
 
 // Origem do clique: ?utm_source=fb vira "(ref: fb)" no fim da mensagem pronta.
 function tagWhatsAppLinks() {

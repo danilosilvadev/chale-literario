@@ -14,13 +14,17 @@
 - **Independência energética e de água** (seção `#energia`), fatos confirmados pelo Dan em 07/10/2026: sol 310 W + alternador + tomada; **3 baterias estacionárias Freedom DF4001 240 Ah (720 Ah no total, nominal em 12 V) + bateria do motor 110 Ah** (o antigo "680 Ah" está proibido pelo check); **inversor 220 V**; **tanque de água limpa de 210 L para motorhome, com quebra-onda e conexão 1/2"**, bomba de vazão forte, enche com mangueira; **aquecedor Lorenzetti a gás (GLP) com misturador**, LZ 750BP, exaustão natural (banho quente fora do camping é verdade); **geladeira Resfriar 67 L 12/24 V** (modelo para caminhão e motorhome, ref. RESGED67); **dorme 3** (cama de casal + cama de solteiro). Autonomia: sem número de dias; usar o exemplo real "notebook o dia todo e climatizador Resfriar a noite inteira". Não citar peso das baterias: o Dan falou ~50 kg, mas a ficha oficial da DF4001 dá 60,3 kg.
 - **Revisada:** dizer só "revisada" (sem data, sem detalhar o tipo de revisão). **Nunca** afirmar que já viajou para fora do Brasil; "pronta para viajar pela América Latina" vale pela documentação.
 
-## Fotos e vídeo (galeria desligada)
+## Fotos: galeria estilo Airbnb e catálogo (v4, out/2026)
 
-Ainda não há foto nem vídeo deste veículo. A galeria e o vídeo estão **desligados** por `"showGallery": false` em `site.config.json`; no lugar aparece o bloco "Receba fotos e o tour em vídeo no WhatsApp". Nenhum texto "placeholder" aparece na página (o check bloqueia). Não usar foto de banco de imagens.
+- **Galeria ligada** (`"showGallery": true`). Seção `#fotos`: mosaico 1 grande + 4 pequenas no desktop; carrossel com snap e bolinhas no celular; botão "Ver todas as fotos" abre o **tour de fotos** em tela cheia (`#tour`), por cômodo, com chips fixos e scroll-spy; clique em qualquer foto abre o lightbox (deslizar, setas do teclado, Esc).
+- Cômodos: A cabana e a estante · Quarto com vista · Cozinha · Banheiro naval · Energia e água · Cabine e motor · Por fora. Dados em `src/data/gallery.json` (cômodo, id, arquivo, legenda, alt).
+- Ainda **não há fotos reais**: cada slot mostra um card com moldura, ícone, legenda e "foto em breve". Para trocar: salvar o arquivo com o nome do JSON em `public/media/fotos/` e rodar o build (lista em `public/media/README.md`).
+- **Catálogo completo e inventário**: página `catalogo.html` (build multi-página do Vite, publicada em `docs/catalogo.html`). 7 categorias, 23 itens, só fatos confirmados. Dados em `src/data/inventory.json`; fotos reais em `public/media/inventario/`. Bateria Freedom DF4001, geladeira Resfriar e aquecedor Lorenzetti usam a imagem do fabricante com "Foto ilustrativa do modelo instalado".
+- Funil do catálogo: só sai para o WhatsApp (mensagem "Oi! Vi o catálogo completo do motorhome…") ou volta para a landing. Barra fixa no celular.
+- Botões "Ver catálogo completo e inventário": na galeria, no fim do tour e na Ficha (logo após Equipamentos). Menu: Fotos · Catálogo · Dúvidas.
+- O "Cozinha" fala só do confirmado: pia com água sob pressão, geladeira, luz de teto. Nada de bancada PU 55, mesa conversível nem fogão.
 
-Para ligar: coloque os arquivos em `public/media/`, preencha **todos** os caminhos em `src/media-slots.js` e mude `showGallery` para `true`. O check falha se a galeria estiver ligada com algum slot vazio. Passo a passo em `public/media/README.md`.
-
-**Foto do dono:** `"ownerPhoto": null` em `site.config.json`. Com uma foto (ex.: `"./media/dono.jpg"`), ela aparece no bloco "Anúncio oficial único". Sem foto, o bloco mostra só o texto.
+**Foto do dono:** `"ownerPhoto": null` em `site.config.json`. Com uma foto (ex.: `"./media/dono.jpg"`), ela aparece no bloco "Anúncio oficial único".
 
 ## Pendente de confirmação do Dan (fora da página por enquanto)
 
@@ -50,8 +54,10 @@ Todas em `vite.config.js` (`waMessages`), número em `site.config.json`. Cada bo
 | `video` | botão "Quero ver por vídeo", seção A cabana | Oi! Vi a cabana no site e queria ver ela ao vivo por vídeo. Sou de ____ e posso em ____. |
 | `troca` | botão "Tenho carro para troca", seção Preço | Oi! Vi a cabana no site. Tenho um carro para dar como parte do pagamento: ____ (modelo/ano). |
 | `duvida` | botão "Tenho uma dúvida", Energia, Ficha, FAQ | Oi! Vi a cabana no site e fiquei com uma dúvida: ____ |
-| `fotos` | bloco "Receba fotos e o tour em vídeo" | Oi! Vi a cabana no site e queria receber as fotos e o vídeo do tour. Sou de ____. |
+| `fotos` | link "Eu mando pelo WhatsApp" na galeria (e o bloco de fotos, se a galeria for desligada) | Oi! Vi a cabana no site e queria receber as fotos e o vídeo do tour. Sou de ____. |
 | `motor` | seção A base | Oi! Vi a cabana no site e queria ver o vídeo do motor funcionando. Sou de ____. |
+| `catalogo` | catálogo: header, topo, fim, rodapé, barra fixa | Oi! Vi o catálogo completo do motorhome no site e quero saber mais. Sou de ____. |
+| `item` | catálogo: "Pedir foto de um item" | Oi! Vi o catálogo completo do motorhome e queria fotos ou detalhes de: ____ |
 
 Se o link tiver `?utm_source=olx` (ou `?ref=olx`), o `src/main.js` acrescenta " (ref: olx)" ao fim da mensagem, para saber de qual anúncio veio o contato.
 
@@ -63,7 +69,7 @@ Se o link tiver `?utm_source=olx` (ou `?ref=olx`), o `src/main.js` acrescenta " 
 
 ## Saídas da página
 
-Sem links para fora além do WhatsApp: sem link do Google Maps (o mapa é uma imagem estática em `public/mapa/anitapolis.webp`, feita com tiles do OpenStreetMap, com crédito na legenda) e sem link do gov.br/CONTRAN. Menu com 3 itens (Fotos, Ficha, Dúvidas) e barra fixa de WhatsApp no celular.
+Sem links para fora além do WhatsApp: sem link do Google Maps (o mapa é uma imagem estática em `public/mapa/anitapolis.webp`, feita com tiles do OpenStreetMap, com crédito na legenda) e sem link do gov.br/CONTRAN. Menu com 3 itens (Fotos, Catálogo, Dúvidas); o catálogo é página interna e barra fixa de WhatsApp no celular.
 
 ## Onde mudar o preço
 

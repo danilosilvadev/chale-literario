@@ -1,0 +1,84 @@
+{
+  "_doc": "Inventário do catálogo (catalogo.html). Só fatos confirmados pelo Dan (ver CONTENT.md). Foto real: public/media/inventario/<file> (aceita .jpeg/.png/.webp com o mesmo nome). Sem foto real, usa 'image' (foto do fabricante, legenda 'Foto ilustrativa do modelo instalado') ou um card com 'foto em breve'.",
+  "categories": [
+    {
+      "id": "estrutura",
+      "name": "Estrutura e isolamento",
+      "icon": "layers",
+      "intro": "A casa em cima do chassi: madeira de verdade e isolamento em três camadas.",
+      "items": [
+        { "id": "pinus", "file": "pinus.jpg", "icon": "layers", "name": "Revestimento em pinus tratado", "spec": "Madeira de verdade no teto e nas molduras", "benefit": "Clima de chalé por dentro, não de caixa." },
+        { "id": "isolamento", "file": "isolamento.jpg", "icon": "layers", "name": "Isolamento triplo", "spec": "Massa antirruído + manta térmica + 3TC", "benefit": "Menos barulho na estrada e o calor guardado no inverno da serra." }
+      ]
+    },
+    {
+      "id": "energia",
+      "name": "Energia",
+      "icon": "sun",
+      "intro": "Três caminhos de carga para ficar onde quiser, não onde tem tomada.",
+      "items": [
+        { "id": "placa-solar", "file": "placa-solar.jpg", "icon": "panel", "name": "Placa solar 310 W", "spec": "Carrega com o veículo parado", "benefit": "Energia sem gerador e sem poste." },
+        { "id": "baterias", "file": "baterias.jpg", "icon": "battery", "image": "./equipamentos/bateria-freedom-df4001.webp", "imageAlt": "Bateria estacionária Freedom DF4001, imagem do fabricante", "name": "3 baterias estacionárias Freedom DF4001", "spec": "12 V · 240 Ah cada · 720 Ah no total", "benefit": "Banco só para a casa: luz, geladeira, notebook e climatizador." },
+        { "id": "alternador", "file": "alternador.jpg", "icon": "road", "name": "Carga pelo alternador", "spec": "Bateria do motor de 110 Ah; as baterias da casa carregam com a Master andando", "benefit": "Dia cinza não prende a viagem no lugar." },
+        { "id": "tomada", "file": "tomada.jpg", "icon": "plug", "name": "Carga pela tomada", "spec": "No camping ou em casa, pela rede", "benefit": "Completa a carga quando existe poste por perto." },
+        { "id": "inversor", "file": "inversor.jpg", "icon": "bolt", "name": "Inversor 220 V", "spec": "Tomada 220 V a bordo", "benefit": "Notebook e carregadores longe do poste." }
+      ]
+    },
+    {
+      "id": "agua",
+      "name": "Água",
+      "icon": "drop",
+      "intro": "Água a bordo e banho quente, longe do camping.",
+      "items": [
+        { "id": "tanque", "file": "tanque.jpg", "icon": "tank", "name": "Tanque de 210 L", "spec": "Feito para motorhome, com quebra-onda · conexão 1/2\"", "benefit": "Água estável com a van andando; enche com mangueira." },
+        { "id": "bomba", "file": "bomba.jpg", "icon": "pump", "name": "Bomba d'água de vazão forte", "spec": "Pressão na pia e no chuveiro", "benefit": "Água com boa vazão, puxada direto do tanque." },
+        { "id": "aquecedor", "file": "aquecedor.jpg", "icon": "flame", "image": "./equipamentos/aquecedor-lorenzetti-lz750bp.webp", "imageAlt": "Aquecedor Lorenzetti LZ 750BP, imagem do fabricante", "name": "Aquecedor Lorenzetti a gás (GLP) com misturador", "spec": "LZ 750BP · exaustão natural", "benefit": "Banho quente fora do camping, sem depender de tomada." }
+      ]
+    },
+    {
+      "id": "cozinha",
+      "name": "Cozinha e conforto",
+      "icon": "cup",
+      "intro": "O dia a dia da cabana: comida gelada, noite fresca e luz quente.",
+      "items": [
+        { "id": "geladeira", "file": "geladeira.jpg", "icon": "fridge", "image": "./equipamentos/geladeira-resfriar-67l.webp", "imageAlt": "Geladeira Resfriar 67 L, imagem do fabricante", "name": "Geladeira Resfriar 67 L 12/24 V", "spec": "Modelo para caminhão e motorhome", "benefit": "Comida gelada direto das baterias, sem gás e sem tomada." },
+        { "id": "pia", "file": "pia.jpg", "icon": "drop", "name": "Pia com água sob pressão", "spec": "Água da bomba, direto do tanque de 210 L", "benefit": "Lavar a louça sem procurar torneira." },
+        { "id": "climatizador", "file": "climatizador.jpg", "icon": "fan", "name": "Climatizador Resfriar", "spec": "Evaporativo · topo de linha", "benefit": "Noite fresca: roda a noite inteira pelas baterias." },
+        { "id": "iluminacao", "file": "iluminacao.jpg", "icon": "moon", "name": "Iluminação LED quente em 4 camadas", "spec": "Teto para cozinhar, sancas, rodapé e estante", "benefit": "De noite, a cabana parece chalé." }
+      ]
+    },
+    {
+      "id": "quarto",
+      "name": "Quarto e estante",
+      "icon": "bed",
+      "intro": "Onde a vista entra pelas portas e os livros viajam junto.",
+      "items": [
+        { "id": "cama-casal", "file": "cama-casal.jpg", "icon": "bed", "name": "Cama de casal na traseira", "spec": "De frente para as portas traseiras", "benefit": "Estaciona de ré, abre as portas e acorda com a vista." },
+        { "id": "cama-solteiro", "file": "cama-solteiro.jpg", "icon": "bed", "name": "Cama de solteiro", "spec": "Dorme 3 no total", "benefit": "Lugar para mais um na viagem." },
+        { "id": "estante", "file": "estante.jpg", "icon": "book", "name": "Estante de livros", "spec": "A maior em motorhome da América Latina (até onde sei)", "benefit": "Uma biblioteca que viaja. A estante fica; os livros pessoais não." }
+      ]
+    },
+    {
+      "id": "banheiro",
+      "name": "Banheiro",
+      "icon": "shower",
+      "intro": "Banheiro dentro de casa, com água quente.",
+      "items": [
+        { "id": "banheiro-naval", "file": "banheiro-naval.jpg", "icon": "shower", "name": "Banheiro naval", "spec": "A bordo, com água quente", "benefit": "Não depende de banheiro de camping." },
+        { "id": "chuveiro", "file": "chuveiro.jpg", "icon": "flame", "name": "Chuveiro com água quente a gás", "spec": "Pelo aquecedor Lorenzetti com misturador", "benefit": "Banho quente no inverno da serra." }
+      ]
+    },
+    {
+      "id": "veiculo",
+      "name": "Veículo e documentação",
+      "icon": "doc",
+      "intro": "A base, sem rodeio.",
+      "items": [
+        { "id": "master", "file": "master.jpg", "icon": "road", "name": "Renault Master __YEAR__", "spec": "Quilometragem total __KM_LABEL__", "benefit": "O chassi é __YEAR__; a casa em cima dele é feita à mão." },
+        { "id": "motor", "file": "motor.jpg", "icon": "road", "name": "Motor refeito aos 550 mil km", "spec": "~50 mil km desde a retífica", "benefit": "Motor e sistemas principais funcionando." },
+        { "id": "documentacao", "file": "documentacao.jpg", "icon": "doc", "name": "Documentada como motorcasa", "spec": "CRLV em dia, sem dívidas", "benefit": "Pronta para viajar pela América Latina." },
+        { "id": "revisada", "file": "revisada.jpg", "icon": "doc", "name": "Revisada", "spec": "Pronta para a estrada", "benefit": "Seu mecânico de confiança é bem-vindo na visita." }
+      ]
+    }
+  ]
+}

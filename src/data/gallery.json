@@ -1,0 +1,213 @@
+{
+  "_doc": "Tour de fotos da landing. Cada slot vira foto quando existir public/media/fotos/<file> (aceita também .jpeg/.png/.webp com o mesmo nome). Sem arquivo, aparece um card com a legenda e 'foto em breve'. Não precisa mexer em código: só salvar a foto com o nome certo e rodar o build.",
+  "featured": [
+    "estante-fim-de-tarde",
+    "quarto-portas-abertas",
+    "led-noite",
+    "chuveiro",
+    "exterior-frente"
+  ],
+  "rooms": [
+    {
+      "id": "cabana",
+      "name": "A cabana e a estante",
+      "icon": "book",
+      "hue": 28,
+      "caption": "Pinus tratado, luz quente e livros por todo lado. Você entra e parece chalé.",
+      "slots": [
+        {
+          "id": "estante-fim-de-tarde",
+          "file": "estante-fim-de-tarde.jpg",
+          "label": "Estante na luz do fim de tarde",
+          "alt": "Estante de livros em pinus tratado iluminada pela luz dourada do fim de tarde"
+        },
+        {
+          "id": "estante-de-frente",
+          "file": "estante-de-frente.jpg",
+          "label": "A estante de ponta a ponta",
+          "alt": "A estante de livros vista de frente, de ponta a ponta"
+        },
+        {
+          "id": "interior-pinus",
+          "file": "interior-pinus.jpg",
+          "label": "Pinus tratado no teto e nas molduras",
+          "alt": "Interior com teto e molduras em pinus tratado"
+        },
+        {
+          "id": "led-noite",
+          "file": "led-noite.jpg",
+          "label": "De noite: luz quente em 4 camadas",
+          "alt": "Interior à noite com a luz quente de LED em quatro camadas"
+        },
+        {
+          "id": "interior-porta-lateral",
+          "file": "interior-porta-lateral.jpg",
+          "label": "A cabana vista da porta lateral",
+          "alt": "Interior da cabana visto da porta lateral, de dia"
+        }
+      ]
+    },
+    {
+      "id": "quarto",
+      "name": "Quarto com vista",
+      "icon": "bed",
+      "hue": 18,
+      "caption": "Estaciona de ré, abre as portas e a paisagem vira a parede do quarto.",
+      "slots": [
+        {
+          "id": "quarto-portas-abertas",
+          "file": "quarto-portas-abertas.jpg",
+          "label": "Portas abertas para a serra",
+          "alt": "Cama de casal na traseira com as portas abertas para a serra"
+        },
+        {
+          "id": "cafe-na-cama",
+          "file": "cafe-na-cama.jpg",
+          "label": "Café na cama com a vista",
+          "alt": "Caneca de café na cama com as portas traseiras abertas"
+        },
+        {
+          "id": "camas",
+          "file": "camas.jpg",
+          "label": "Dorme 3: casal + solteiro",
+          "alt": "Cama de casal e cama de solteiro"
+        }
+      ]
+    },
+    {
+      "id": "cozinha",
+      "name": "Cozinha",
+      "icon": "cup",
+      "hue": 36,
+      "caption": "Compacta e de verdade: pia com água sob pressão, geladeira 12/24 V e luz de teto para cozinhar.",
+      "slots": [
+        {
+          "id": "cozinha",
+          "file": "cozinha.jpg",
+          "label": "A cozinha da cabana",
+          "alt": "Cozinha do motorhome com pia e bancada"
+        },
+        {
+          "id": "geladeira",
+          "file": "geladeira.jpg",
+          "label": "Geladeira Resfriar 67 L 12/24 V",
+          "alt": "Geladeira Resfriar de 67 litros instalada"
+        },
+        {
+          "id": "pia",
+          "file": "pia.jpg",
+          "label": "Pia com água sob pressão",
+          "alt": "Pia da cozinha com torneira"
+        }
+      ]
+    },
+    {
+      "id": "banheiro",
+      "name": "Banheiro naval",
+      "icon": "shower",
+      "hue": 200,
+      "caption": "Banho quente a gás no meio da serra, sem depender de tomada nem de camping.",
+      "slots": [
+        {
+          "id": "banheiro",
+          "file": "banheiro.jpg",
+          "label": "Banheiro naval",
+          "alt": "Banheiro naval do motorhome"
+        },
+        {
+          "id": "chuveiro",
+          "file": "chuveiro.jpg",
+          "label": "Chuveiro com água quente a gás",
+          "alt": "Chuveiro com água quente a gás"
+        },
+        {
+          "id": "aquecedor",
+          "file": "aquecedor.jpg",
+          "label": "Aquecedor Lorenzetti a gás",
+          "alt": "Aquecedor Lorenzetti a gás instalado"
+        }
+      ]
+    },
+    {
+      "id": "energia",
+      "name": "Energia e água",
+      "icon": "sun",
+      "hue": 44,
+      "caption": "O sol carrega, a estrada carrega, a tomada completa. 720 Ah e 210 L para ficar onde a vista é boa.",
+      "slots": [
+        {
+          "id": "placa-solar",
+          "file": "placa-solar.jpg",
+          "label": "Placa solar de 310 W",
+          "alt": "Placa solar de 310 W no teto do motorhome"
+        },
+        {
+          "id": "baterias",
+          "file": "baterias.jpg",
+          "label": "3 baterias Freedom: 720 Ah",
+          "alt": "Três baterias estacionárias Freedom DF4001 instaladas"
+        },
+        {
+          "id": "quadro-eletrico",
+          "file": "quadro-eletrico.jpg",
+          "label": "Quadro elétrico e inversor 220 V",
+          "alt": "Quadro elétrico e inversor 220 V"
+        },
+        {
+          "id": "tanque",
+          "file": "tanque.jpg",
+          "label": "Tanque de 210 L com quebra-onda",
+          "alt": "Tanque de água de 210 litros com quebra-onda"
+        }
+      ]
+    },
+    {
+      "id": "motor",
+      "name": "Cabine e motor",
+      "icon": "road",
+      "hue": 165,
+      "caption": "Renault Master 2006 com motor refeito aos 550 mil km: só ~50 mil km desde a retífica.",
+      "slots": [
+        {
+          "id": "cabine",
+          "file": "cabine.jpg",
+          "label": "Cabine da Master 2006",
+          "alt": "Cabine da Renault Master 2006"
+        },
+        {
+          "id": "motor",
+          "file": "motor.jpg",
+          "label": "Motor refeito aos 550 mil km",
+          "alt": "Motor da Renault Master, refeito aos 550 mil km"
+        }
+      ]
+    },
+    {
+      "id": "fora",
+      "name": "Por fora",
+      "icon": "mountain",
+      "hue": 88,
+      "caption": "Ela mora em Anitápolis, na serra catarinense. É aqui que você vem conhecer.",
+      "slots": [
+        {
+          "id": "exterior-frente",
+          "file": "exterior-frente.jpg",
+          "label": "Master 2006, de frente",
+          "alt": "Renault Master 2006 motorhome vista de frente"
+        },
+        {
+          "id": "exterior-lateral",
+          "file": "exterior-lateral.jpg",
+          "label": "De lado, pronta para a estrada",
+          "alt": "Renault Master 2006 motorhome vista de lado"
+        },
+        {
+          "id": "serra",
+          "file": "serra.jpg",
+          "label": "Na serra catarinense",
+          "alt": "O motorhome estacionado na serra catarinense"
+        }
+      ]
+    }
+  ]
+}

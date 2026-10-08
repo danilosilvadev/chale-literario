@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
+import { renderBlocks } from './scripts/blocks.mjs'
 
 const root = path.dirname(fileURLToPath(import.meta.url))
 const configPath = path.join(root, 'site.config.json')
@@ -74,6 +75,8 @@ export const waMessages = {
   duvida: 'Oi! Vi a cabana no site e fiquei com uma dúvida: ____',
   fotos: 'Oi! Vi a cabana no site e queria receber as fotos e o vídeo do tour. Sou de ____.',
   motor: 'Oi! Vi a cabana no site e queria ver o vídeo do motor funcionando. Sou de ____.',
+  catalogo: 'Oi! Vi o catálogo completo do motorhome no site e quero saber mais. Sou de ____.',
+  item: 'Oi! Vi o catálogo completo do motorhome e queria fotos ou detalhes de: ____',
 }
 
 // Blocos condicionais no index.html: <!--if:flag--> ... <!--/if:flag--> e <!--if:!flag--> ... <!--/if:!flag-->
@@ -94,6 +97,7 @@ function applyConfig(html, cfg) {
   const updated = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' }).format(new Date())
 
   html = applyFlags(html, { gallery: cfg.showGallery, ownerPhoto: Boolean(cfg.ownerPhoto) })
+  html = renderBlocks(html)
 
   const replacements = [
     ['__PRICE_LABEL_JSON__', escapeJson(cfg.priceLabel)],
@@ -108,6 +112,8 @@ function applyConfig(html, cfg) {
     ['__WA_HREF_DUVIDA__', wa('duvida')],
     ['__WA_HREF_FOTOS__', wa('fotos')],
     ['__WA_HREF_MOTOR__', wa('motor')],
+    ['__WA_HREF_CATALOGO__', wa('catalogo')],
+    ['__WA_HREF_ITEM__', wa('item')],
     ['__WA_HREF__', waHref],
     ['__OWNER_PHOTO__', escapeHtml(cfg.ownerPhoto || '')],
     ['__UPDATED__', updated],
@@ -127,6 +133,14 @@ function applyConfig(html, cfg) {
 export default defineConfig(({ mode }) => ({
   base: './',
   envPrefix: ['VITE_', 'WHATSAPP_'],
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.join(root, 'index.html'),
+        catalogo: path.join(root, 'catalogo.html'),
+      },
+    },
+  },
   plugins: [
     {
       name: 'site-config',
