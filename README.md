@@ -4,22 +4,14 @@ Página estática, em português, do motorhome à venda: Renault Master 2006, ce
 
 Não é um gerenciador de conteúdo. O texto mora no `index.html`. Preço, ano, quilometragem e WhatsApp saem do `site.config.json` na hora do build. Fotos ainda não existem: a galeria mostra cards "foto em breve" gerados de `src/data/gallery.json` — veja `CONTENT.md`.
 
-## Prévia no ar (GitHub Pages)
+## No ar (GitHub Pages + domínio)
 
-O site já está exportado em `docs/`, com caminhos relativos (`base: './'` no Vite). Isso serve na raiz de um domínio e também em `https://<usuario>.github.io/<repositorio>/`.
+URL pública: **https://vistasobrerodas.com/chale-literario/** (catálogo em `/chale-literario/catalogo.html`).
 
-Este projeto ainda é um rascunho: não há repositório público no GitHub, então a URL da Pages ainda não existe. Assim que o repositório for publicado ou espelhado no GitHub, ligue a Pages — não precisa de outro build:
+O site é exportado em `docs/` com caminhos relativos (`base: './'` no Vite), então funciona nesse caminho de projeto e também no espelho `https://danilosilvadev.github.io/chale-literario/` enquanto o DNS do domínio customizado propaga.
 
-1. No GitHub, abra **Settings → Pages**.
-2. Em **Build and deployment**, escolha **Deploy from a branch**.
-3. Branch **`main`**, pasta **`/docs`**, e salve.
-4. A URL aparece no topo dessa tela, em geral em um ou dois minutos.
+Pages deste repositório: branch `main`, pasta `/docs`. O site raiz `danilosilvadev.github.io` carrega o CNAME `vistasobrerodas.com` e redireciona `/` para `/chale-literario/`.
 
-Se a conta for `danilosilvadev`, o endereço fica:
-
-`https://danilosilvadev.github.io/<nome-do-repositorio>/`
-
-O nome do repositório é o que você escolher ao publicar. A tela de Pages mostra o link definitivo.
 
 Cada mudança de texto, preço ou foto pede um build novo e um commit da pasta `docs/`:
 

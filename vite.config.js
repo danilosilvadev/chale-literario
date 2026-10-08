@@ -58,6 +58,7 @@ export function readSiteConfig(mode = 'production') {
     whatsappDisplay: formatBrazilPhone(whatsappNumber),
     showGallery: file.showGallery === true,
     ownerPhoto: typeof file.ownerPhoto === 'string' && file.ownerPhoto.trim() ? file.ownerPhoto.trim() : null,
+    siteUrl: String(file.siteUrl || '').replace(/\/?$/, '/') || 'https://vistasobrerodas.com/chale-literario/',
   }
 }
 
@@ -121,6 +122,7 @@ function applyConfig(html, cfg) {
     ['__WA_DISPLAY__', escapeHtml(cfg.whatsappDisplay)],
     ['__CONFIG_NOTICE__', notice],
     ['__ROBOTS__', robots],
+    ['__SITE_URL__', escapeHtml(cfg.siteUrl)],
   ]
 
   let out = html

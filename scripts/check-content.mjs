@@ -8,6 +8,10 @@ const config = JSON.parse(fs.readFileSync(path.join(project, 'site.config.json')
 const gallery = JSON.parse(fs.readFileSync(path.join(project, 'src/data/gallery.json'), 'utf8'))
 const inventory = JSON.parse(fs.readFileSync(path.join(project, 'src/data/inventory.json'), 'utf8'))
 const number = String(config.whatsappNumber).replace(/\D/g, '')
+const siteUrl = String(config.siteUrl || '').replace(/\/?$/, '/')
+if (siteUrl !== 'https://vistasobrerodas.com/chale-literario/') {
+  fail(`siteUrl deve ser https://vistasobrerodas.com/chale-literario/ (tem "${siteUrl}")`)
+}
 
 let page = ''
 function fail(message) {
@@ -38,6 +42,8 @@ const banned = [
   // sem custo de construção / investimento do dono (decisão do Dan, out/2026)
   'Investimento do dono', 'nvestimento', 'nvesti', 'R$ 100 mil', '100 mil', 'R$ 100.000', '100.000',
   'mão de obra', 'meses de obra', 'do zero', 'custo para montar', 'custo de reproduzir',
+  // URL antiga do GitHub Pages (domínio novo: vistasobrerodas.com/chale-literario)
+  'danilosilvadev.github.io/motorhome-venda', 'github.io/motorhome-venda',
 ]
 
 // ---------- regras comuns às duas páginas ----------
@@ -271,7 +277,11 @@ if (html) {
     const data = JSON.parse(jsonMatch[1])
     if (String(data.offers?.price) !== String(config.priceAmount)) fail('JSON-LD com preço diferente de site.config.json')
     if (String(data.vehicleModelDate) !== String(config.year)) fail('JSON-LD com ano divergente')
+    if (data.url !== siteUrl) fail(`JSON-LD url deve ser ${siteUrl}`)
+    if (data.offers?.url !== siteUrl) fail(`JSON-LD offers.url deve ser ${siteUrl}`)
   }
+  if (!html.includes(`rel="canonical" href="${siteUrl}"`)) fail(`canonical ausente ou diferente de ${siteUrl}`)
+  if (!html.includes(`property="og:url" content="${siteUrl}"`)) fail(`og:url ausente ou diferente de ${siteUrl}`)
 }
 
 // ---------- catálogo ----------
@@ -284,6 +294,8 @@ if (cat) {
   }
   if (!/href="https:\/\/wa\.me\/\d+\?text=Oi!%20Vi%20o%20cat%C3%A1logo/.test(cat)) fail('WhatsApp do catálogo sem a mensagem "Vi o catálogo…"')
   if (!/<a [^>]*href="\.\/"/.test(cat)) fail('link de volta para o anúncio ausente')
+  if (!cat.includes(`rel="canonical" href="${siteUrl}catalogo.html"`)) fail('canonical do catálogo ausente')
+  if (!cat.includes(`property="og:url" content="${siteUrl}catalogo.html"`)) fail('og:url do catálogo ausente')
   const cards = (cat.match(/class="inv-card"/g) || []).length
   if (cards !== itemTotal) fail(`catálogo com ${cards} itens, dados têm ${itemTotal}`)
   for (const name of catNames) if (!cat.includes(`>${name}</h2>`)) fail(`categoria ausente: ${name}`)
