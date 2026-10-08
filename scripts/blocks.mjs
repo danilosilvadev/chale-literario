@@ -65,7 +65,7 @@ export function renderMosaic(gallery) {
   const byId = new Map(gallery.slots.map((s) => [s.id, s]))
   const featured = gallery.featured.map((id) => byId.get(id)).filter(Boolean)
   const items = featured
-    .map((slot, i) => `<li class="mosaic-item mosaic-item--${i + 1}" data-index="${i}">${tile(slot, { eager: i === 0 })}</li>`)
+    .map((slot, i) => `<li class="mosaic-item mosaic-item--${i + 1}" data-index="${i}">${tile(slot)}</li>`)
     .join('\n              ')
   const dots = featured
     .map((_, i) => `<button type="button" class="dot${i === 0 ? ' is-active' : ''}" data-dot="${i}" aria-label="Foto ${i + 1} de ${featured.length}"></button>`)
@@ -161,9 +161,88 @@ export function renderInventory(inv) {
   return { chips, sections, total }
 }
 
+// Tamanho real da imagem (JPEG, PNG, WebP), para width/height corretos na foto do topo.
+export function imageSize(file) {
+  try {
+    const b = fs.readFileSync(file)
+    if (b[0] === 0x89 && b.toString('ascii', 1, 4) === 'PNG') return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }
+    if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 8, 12) === 'WEBP') {
+      const kind = b.toString('ascii', 12, 16)
+      if (kind === 'VP8X') return { w: 1 + b.readUIntLE(24, 3), h: 1 + b.readUIntLE(27, 3) }
+      if (kind === 'VP8 ') return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff }
+      if (kind === 'VP8L') {
+        const n = b.readUInt32LE(21)
+        return { w: (n & 0x3fff) + 1, h: ((n >> 14) & 0x3fff) + 1 }
+      }
+    }
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      let i = 2
+      while (i < b.length) {
+        if (b[i] !== 0xff) { i++; continue }
+        const marker = b[i + 1]
+        const len = b.readUInt16BE(i + 2)
+        if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+          return { w: b.readUInt16BE(i + 7), h: b.readUInt16BE(i + 5) }
+        }
+        i += 2 + len
+      }
+    }
+  } catch {}
+  return null
+}
+
+// Foto do topo (hero). Arquivo: public/media/fotos/hero-estante.* ; versões menores opcionais
+// hero-estante-640.*, -960.*, -1280.* viram srcset. Sem arquivo, usa a foto da galeria
+// "estante-fim-de-tarde" se existir; senão, o card "foto em breve".
+export const HERO_SIZES = '(min-width: 1152px) 563px, (min-width: 900px) calc(52.5vw - 42px), calc(100vw - 2rem)'
+
+export function heroImage(gallery) {
+  const hero = gallery.hero
+  if (!hero) return null
+  let src = findMedia('fotos', hero.file)
+  let base = hero.file.replace(/\.[a-z0-9]+$/i, '')
+  if (!src) {
+    const fallback = gallery.rooms.flatMap((r) => r.slots).find((s) => s.id === 'estante-fim-de-tarde')
+    if (fallback) {
+      src = findMedia('fotos', fallback.file)
+      base = fallback.file.replace(/\.[a-z0-9]+$/i, '')
+    }
+  }
+  if (!src) return { hero, src: null }
+  const size = imageSize(path.join(root, 'public', src.slice(2))) || { w: 1600, h: 1200 }
+  const variants = []
+  for (const w of [640, 960, 1280]) {
+    const v = findMedia('fotos', `${base}-${w}.jpg`)
+    if (v) variants.push(`${v} ${w}w`)
+  }
+  const srcset = variants.length ? [...variants, `${src} ${size.w}w`].join(', ') : ''
+  return { hero, src, size, srcset }
+}
+
+export function renderHero(gallery) {
+  const img = heroImage(gallery)
+  if (!img) return { media: '', preload: '' }
+  const { hero } = img
+  if (!img.src) {
+    return {
+      media: `<figure class="hero-media" style="--hue:${Number(hero.hue) || 28}">${frame(hero.label, hero.icon || 'book')}</figure>`,
+      preload: '',
+    }
+  }
+  const srcsetAttr = img.srcset ? ` srcset="${img.srcset}" sizes="${HERO_SIZES}"` : ` sizes="${HERO_SIZES}"`
+  return {
+    media: `<figure class="hero-media hero-media--photo"><img class="hero-img" src="${img.src}"${srcsetAttr} alt="${esc(hero.alt)}" width="${img.size.w}" height="${img.size.h}" loading="eager" fetchpriority="high" /></figure>`,
+    preload: `<link rel="preload" as="image" href="${img.src}"${img.srcset ? ` imagesrcset="${img.srcset}" imagesizes="${HERO_SIZES}"` : ''} fetchpriority="high" />`,
+  }
+}
+
 export function renderBlocks(html) {
   if (html.includes('<!--partial:sprite-->')) {
     html = html.replace('<!--partial:sprite-->', fs.readFileSync(path.join(root, 'src/partials/sprite.svg'), 'utf8').trim())
+  }
+  if (/<!--hero:/.test(html)) {
+    const hero = renderHero(loadGallery())
+    html = html.replace('<!--hero:preload-->', hero.preload).replace('<!--hero:media-->', hero.media)
   }
   if (/<!--gallery:/.test(html)) {
     const gallery = loadGallery()

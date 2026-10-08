@@ -14,6 +14,10 @@
 - **Independência energética e de água** (seção `#energia`), fatos confirmados pelo Dan em 07/10/2026: sol 310 W + alternador + tomada; **3 baterias estacionárias Freedom DF4001 240 Ah (720 Ah no total, nominal em 12 V) + bateria do motor 110 Ah** (o antigo "680 Ah" está proibido pelo check); **inversor 220 V**; **tanque de água limpa de 210 L para motorhome, com quebra-onda e conexão 1/2"**, bomba de vazão forte, enche com mangueira; **aquecedor Lorenzetti a gás (GLP) com misturador**, LZ 750BP, exaustão natural (banho quente fora do camping é verdade); **geladeira Resfriar 67 L 12/24 V** (modelo para caminhão e motorhome, ref. RESGED67); **dorme 3** (cama de casal + cama de solteiro). Autonomia: sem número de dias; usar o exemplo real "notebook o dia todo e climatizador Resfriar a noite inteira". Não citar peso das baterias: o Dan falou ~50 kg, mas a ficha oficial da DF4001 dá 60,3 kg.
 - **Revisada:** dizer só "revisada" (sem data, sem detalhar o tipo de revisão). **Nunca** afirmar que já viajou para fora do Brasil; "pronta para viajar pela América Latina" vale pela documentação.
 
+## Hero (v5, aprovado pelo Dan em 07/10/2026): emoção primeiro, preço logo depois
+
+Ordem no celular: linha "Renault Master 2006 · Anitápolis, SC" → título "Uma cabana aconchegante sobre rodas" → foto do topo ("Estante na luz do fim de tarde", arquivo `public/media/fotos/hero-estante.*`) → frase da estante → R$ 139.900 com "Aceito carro com FIPE até R$ 50 mil como parte do pagamento" logo abaixo → botão do WhatsApp + "Respondo em até 2 h · sem compromisso". Em 390×844 o preço e o botão ficam na primeira tela, acima da barra fixa. No desktop: duas colunas (foto à esquerda; texto, preço e botão à direita) e os 4 cartões de fatos embaixo. O check confere essa ordem.
+
 ## Fotos: galeria estilo Airbnb e catálogo (v4, out/2026)
 
 - **Galeria ligada** (`"showGallery": true`). Seção `#fotos`: mosaico 1 grande + 4 pequenas no desktop; carrossel com snap e bolinhas no celular; botão "Ver todas as fotos" abre o **tour de fotos** em tela cheia (`#tour`), por cômodo, com chips fixos e scroll-spy; clique em qualquer foto abre o lightbox (deslizar, setas do teclado, Esc).

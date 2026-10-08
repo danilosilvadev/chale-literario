@@ -7,6 +7,16 @@ Fotos reais da van entram aqui **só pelo nome do arquivo**. Não precisa mexer 
 - Legendas, textos alternativos e ordem ficam em `src/data/gallery.json` (tour de fotos) e `src/data/inventory.json` (catálogo).
 - O mosaico do topo da galeria usa os 5 slots de `featured` em `gallery.json`.
 
+## Foto do topo (hero): `public/media/fotos/hero-estante.jpg`
+
+A primeira foto da página, entre o título e o preço: **"Estante na luz do fim de tarde"**. É a imagem principal (LCP): carrega na hora (`loading="eager"`, `fetchpriority="high"`, com preload e `sizes`).
+
+- Arquivo: `hero-estante.jpg` (ou `.jpeg/.webp/.png/.avif`). Ideal: horizontal 3:2 ou 4:3, ~1600 px de largura, JPG ~80.
+- Versões menores opcionais para o celular, usadas no `srcset`: `hero-estante-640.jpg`, `hero-estante-960.jpg`, `hero-estante-1280.jpg`.
+- Se `hero-estante.*` não existir mas existir `estante-fim-de-tarde.*` (da galeria), o topo usa essa.
+- Sem nenhuma das duas, o topo mostra o card "foto em breve" (até ~45% da altura da tela no celular).
+- Legenda e alt ficam em `hero` dentro de `src/data/gallery.json`.
+
 ## Tour de fotos da landing: `public/media/fotos/`
 
 | Cômodo | Arquivo | Legenda na página |

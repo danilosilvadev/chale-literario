@@ -44,7 +44,7 @@ const banned = [
 function commonChecks(html, { minWa }) {
   const leftovers = html.match(/__[A-Z0-9_]+__/g)
   if (leftovers) fail(`tokens não substituídos: ${[...new Set(leftovers)].join(', ')}`)
-  if (/<!--(gallery|inventory|partial):/.test(html)) fail('bloco gerado não substituído (<!--gallery:/inventory:/partial:-->)')
+  if (/<!--(gallery|inventory|partial|hero):/.test(html)) fail('bloco gerado não substituído (<!--gallery:/inventory:/partial:-->)')
   if (!html.includes('id="icon-wa"')) fail('sprite de ícones ausente')
   if (!html.includes(config.priceLabel)) fail(`preço "${config.priceLabel}" ausente`)
   if (html.includes('config-notice')) fail('aviso de número de exemplo ainda aparece')
@@ -195,6 +195,39 @@ if (html) {
   }
   const intentTexts = new Set([...html.matchAll(/href="https:\/\/wa\.me\/\d+\?text=([^"]+)"[^>]*data-intent=/g)].map((m) => m[1]))
   if (intentTexts.size !== 3) fail('os 3 botões de intenção precisam de mensagens diferentes')
+
+  // Hero: emoção primeiro, preço logo depois (ordem aprovada pelo Dan)
+  const hero = html.match(/<section class="hero"[\s\S]*?<\/section>/)?.[0] || ''
+  const order = [
+    ['linha do modelo', 'class="disclosure"'],
+    ['título', '<h1'],
+    ['foto do topo', 'class="hero-media'],
+    ['frase da estante', 'class="hero-sub"'],
+    ['preço', 'class="price"'],
+    ['troca FIPE', 'class="price-trade"'],
+    ['botão do WhatsApp', 'data-wa="padrao"'],
+    ['microcopy', 'Respondo em até 2 h'],
+  ]
+  let last = -1
+  for (const [name, needle] of order) {
+    const at = hero.indexOf(needle)
+    if (at < 0) fail(`hero sem ${name}`)
+    else if (at < last) fail(`hero fora de ordem: ${name} veio antes do item anterior`)
+    else last = at
+  }
+  if ((hero.match(/class="btn [^"]*btn--wa/g) || []).length !== 1) fail('hero precisa de exatamente 1 botão de WhatsApp')
+  const heroImg = hero.match(/<img class="hero-img"[^>]*>/)?.[0]
+  if (heroImg) {
+    if (!/loading="eager"/.test(heroImg) || !/fetchpriority="high"/.test(heroImg) || !/\ssizes="/.test(heroImg)) {
+      fail('foto do topo precisa de loading="eager", fetchpriority="high" e sizes (é o LCP)')
+    }
+    if (!/<link rel="preload" as="image"[^>]*fetchpriority="high"/.test(html)) fail('foto do topo sem preload')
+    if ((html.match(/fetchpriority="high"/g) || []).length > 2) fail('só a foto do topo pode ter fetchpriority="high"')
+  } else if (!/class="hero-media"[^>]*>\s*<span class="frame"[\s\S]*?foto em breve/.test(hero)) {
+    fail('sem foto do topo, o hero precisa do card "foto em breve"')
+  }
+  const loadingEager = (html.match(/loading="eager"/g) || []).length
+  if (loadingEager > (heroImg ? 1 : 0)) fail('loading="eager" só na foto do topo')
 
   // catálogo: botão na galeria e na Ficha
   const catLinks = (html.match(/href="\.\/catalogo\.html"/g) || []).length

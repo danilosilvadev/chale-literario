@@ -1,5 +1,13 @@
 {
   "_doc": "Tour de fotos da landing. Cada slot vira foto quando existir public/media/fotos/<file> (aceita também .jpeg/.png/.webp com o mesmo nome). Sem arquivo, aparece um card com a legenda e 'foto em breve'. Não precisa mexer em código: só salvar a foto com o nome certo e rodar o build.",
+  "hero": {
+    "id": "hero-estante",
+    "file": "hero-estante.jpg",
+    "label": "Estante na luz do fim de tarde",
+    "alt": "A estante de livros em pinus tratado na luz dourada do fim de tarde, dentro do motorhome",
+    "icon": "book",
+    "hue": 28
+  },
   "featured": [
     "estante-fim-de-tarde",
     "quarto-portas-abertas",
