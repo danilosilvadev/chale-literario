@@ -41,40 +41,101 @@ if (!labelDigits.includes(String(config.priceAmount))) {
   fail('priceLabel e priceAmount divergem em site.config.json')
 }
 
-const banned = ['182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900', '680 Ah', 'refletivo térmico', 'anti-ruído']
+const banned = [
+  '182.000', '182000', 'R$ 182', '182 mil', '149.900', '149900', '680 Ah',
+  'refletivo térmico', 'anti-ruído', '5500000000000',
+  // fatos ainda não confirmados pelo Dan (ver CONTENT.md)
+  'MDF', 'PU 55', 'ucalipto', 'PU náutico', 'onversível', 'km por dia', 'anti-impacto',
+  // nada de prometer financiamento
+  'inanciamento', 'inanciar', 'inanciável',
+  // saídas externas
+  'gov.br', 'google.com/maps', 'maps.google', 'Abrir Anitápolis no Google Maps', '<iframe',
+  // redação negativa / repetição cortada na auditoria
+  'linda estante', 'não marcamos', 'mais embaixo', 'Chamar no WhatsApp',
+]
 for (const term of banned) {
-  if (html.includes(term)) fail(`valor aposentado encontrado no HTML: ${term}`)
+  if (html.includes(term)) fail(`termo bloqueado encontrado no HTML: ${term}`)
 }
 
+// Texto visível (sem tags, scripts e estilos) + atributos que aparecem para a pessoa
+const visible = html
+  .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+  .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+  .replace(/<head[\s\S]*?<\/head>/i, ' ')
+  .replace(/<[^>]+>/g, ' ')
+const visibleAttrs = [...html.matchAll(/\s(?:alt|title|aria-label|placeholder|data-caption|data-alt)="([^"]*)"/gi)]
+  .map((m) => m[1])
+  .join(' ')
+if (/placeholder/i.test(visible) || /placeholder/i.test(visibleAttrs)) {
+  fail('a palavra "placeholder" aparece no texto visível do HTML')
+}
+if (/\bDan\b/.test(visible) || /\bDan\b/.test(visibleAttrs)) {
+  fail('o nome do dono aparece na página; use "o dono"/"eu" até ele confirmar')
+}
+if (/<form\b/i.test(html) || /\srequired\b/i.test(html)) fail('formulário obrigatório antes do WhatsApp')
+
 for (const phrase of [
-  'Foto exterior — placeholder',
-  'Vídeo walkthrough — placeholder',
+  'Uma cabana aconchegante',
   'Anitápolis',
-  'São José',
-  'Florianópolis',
-  'placeholder',
   'motor refeito aos 550 mil km',
   'FIPE até R$ 50 mil',
-  'cabana aconchegante',
   'Independência energética e de água',
   'Documentada como motorcasa',
   'sem dívidas',
   'Revisada',
   'Pronta para viajar pela América Latina',
-  'a maior estante em motorhome da América Latina',
-  'maps.google.com/maps?q=Anit',
+  'em motorhome da América Latina (até onde sei)',
+  './mapa/anitapolis.webp',
+  'colaboradores do OpenStreetMap',
   '210 L',
-  'aquecedor Lorenzetti a gás (GLP) com misturador',
   'quebra-onda',
   'Isolamento triplo: massa antirruído + manta térmica + 3TC',
   'Freedom DF4001 240 Ah (720 Ah no total)',
+  'aquecedor Lorenzetti a gás com misturador',
+  'Aquecedor Lorenzetti a gás (GLP) com misturador',
   'LZ 750BP',
-  'baterias estacionárias Freedom',
   'Inversor 220 V',
   'Resfriar 67 L 12/24 V',
+  'Respondo em até 2 h',
+  'Anúncio oficial único',
+  'nunca peço sinal',
+  'R$ 169.900',
+  '~R$ 100 mil',
+  'Receba fotos e o tour em vídeo no WhatsApp',
 ]) {
   if (!html.includes(phrase)) fail(`texto obrigatório ausente: ${phrase}`)
 }
+
+// WhatsApp: todo link vai para o número real, com mensagem pronta
+const number = String(config.whatsappNumber).replace(/\D/g, '')
+const waLinks = [...html.matchAll(/href="([^"]*(?:wa\.me|whatsapp)[^"]*)"/gi)].map((m) => m[1])
+if (waLinks.length < 8) fail(`poucos links de WhatsApp (${waLinks.length})`)
+for (const href of waLinks) {
+  if (!href.startsWith(`https://wa.me/${number}?text=`)) fail(`link de WhatsApp fora do padrão: ${href}`)
+}
+for (const [intent, label] of [
+  ['video', 'Quero ver por vídeo'],
+  ['troca', 'Tenho carro para troca'],
+  ['duvida', 'Tenho uma dúvida'],
+]) {
+  const re = new RegExp(`<a[^>]*href="https://wa\\.me/${number}\\?text=([^"]+)"[^>]*data-intent="${intent}"[^>]*>[\\s\\S]*?${label}`)
+  const m = html.match(re)
+  if (!m) fail(`botão de intenção ausente: ${label}`)
+  else if (!decodeURIComponent(m[1]).startsWith('Oi!')) fail(`mensagem pronta estranha em ${label}`)
+}
+const intentTexts = new Set(
+  [...html.matchAll(/href="https:\/\/wa\.me\/\d+\?text=([^"]+)"[^>]*data-intent=/g)].map((m) => m[1]),
+)
+if (intentTexts.size !== 3) fail('os 3 botões de intenção precisam de mensagens diferentes')
+
+// Saídas: nenhum link para fora, exceto o WhatsApp
+const outbound = [...html.matchAll(/<a\b[^>]*href="(https?:[^"]+)"/gi)]
+  .map((m) => m[1])
+  .filter((href) => !href.startsWith('https://wa.me/'))
+if (outbound.length) fail(`links de saída na página: ${outbound.join(', ')}`)
+const navLinks = (html.match(/<nav[\s\S]*?<\/nav>/)?.[0].match(/<a\b/g) || []).length
+if (navLinks !== 3) fail(`o menu deve ter 3 itens (tem ${navLinks})`)
+if (!html.includes('class="dock"')) fail('barra fixa de WhatsApp ausente')
 
 if (!html.includes('src="./assets/') || !html.includes('href="./favicon.svg"')) {
   fail('os assets precisam de caminho relativo (base ./) para GitHub Pages')
@@ -83,12 +144,12 @@ if (/src="\/assets\/|href="\/assets\//.test(html)) {
   fail('caminho absoluto /assets quebra a página num repositório GitHub Pages')
 }
 
-// <img> só na seção Equipamentos (imagens de referência do fabricante, em public/equipamentos/).
-// Fotos reais da van continuam entrando por src/media-slots.js.
+// <img> só para imagens do fabricante (./equipamentos/) e a foto do dono (./media/, se configurada).
+// Fotos reais da van entram por src/media-slots.js.
 const imgs = [...html.matchAll(/<img\b[^>]*>/gi)].map((match) => match[0])
 for (const tag of imgs) {
   const src = tag.match(/\ssrc="([^"]+)"/)?.[1] || ''
-  if (!src.startsWith('./equipamentos/')) fail(`<img> fora de ./equipamentos/: ${src || tag}`)
+  if (!/^\.\/(equipamentos|media|mapa)\//.test(src)) fail(`<img> fora de ./equipamentos/, ./media/ ou ./mapa/: ${src || tag}`)
   else if (!fs.existsSync(path.join(project, 'public', src.slice(2)))) fail(`imagem ausente: ${src}`)
   if (!/\sloading="lazy"/.test(tag)) fail(`<img> sem loading="lazy": ${src}`)
   if (!/\salt="[^"]+"/.test(tag)) fail(`<img> sem alt: ${src}`)
@@ -106,13 +167,22 @@ if (/unsplash|pexels|shutterstock|picsum|placeholder\.com/i.test(html)) {
   fail('referência a banco de imagens no HTML')
 }
 
+// Galeria: desligada (showGallery false) => nenhum slot na página.
+// Ligada => todos os slots na página e todos com arquivo real.
 const slotsInHtml = [...html.matchAll(/data-slot="([^"]+)"/g)].map((match) => match[1])
-for (const key of Object.keys(mediaSlots)) {
-  if (!slotsInHtml.includes(key)) fail(`slot "${key}" sem elemento na página`)
+if (config.showGallery === true) {
+  for (const [key, src] of Object.entries(mediaSlots)) {
+    if (!slotsInHtml.includes(key)) fail(`slot "${key}" sem elemento na página`)
+    if (src == null) fail(`galeria ligada, mas o slot "${key}" está sem foto (src/media-slots.js)`)
+  }
+  for (const slot of slotsInHtml) {
+    if (!(slot in mediaSlots)) fail(`data-slot desconhecido: ${slot}`)
+  }
+} else if (slotsInHtml.length) {
+  fail(`galeria desligada, mas há slots na página: ${slotsInHtml.join(', ')}`)
 }
-for (const slot of slotsInHtml) {
-  if (!(slot in mediaSlots)) fail(`data-slot desconhecido: ${slot}`)
-}
+if (config.ownerPhoto && !html.includes('class="owner-photo"')) fail('ownerPhoto configurada, mas a foto não entrou')
+if (!config.ownerPhoto && html.includes('owner-photo')) fail('foto do dono na página sem ownerPhoto configurada')
 
 for (const [key, src] of Object.entries(mediaSlots)) {
   if (src == null) continue

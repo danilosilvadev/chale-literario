@@ -55,6 +55,8 @@ export function readSiteConfig(mode = 'production') {
     whatsappNumber,
     whatsappIsPlaceholder: /^55(0+)$/.test(whatsappNumber),
     whatsappDisplay: formatBrazilPhone(whatsappNumber),
+    showGallery: file.showGallery === true,
+    ownerPhoto: typeof file.ownerPhoto === 'string' && file.ownerPhoto.trim() ? file.ownerPhoto.trim() : null,
   }
 }
 
@@ -63,13 +65,35 @@ function formatBrazilPhone(digits) {
   return m ? `(${m[1]}) ${m[2]}-${m[3]}` : `+${digits}`
 }
 
+// Mensagens prontas do WhatsApp, uma por intenção (auditoria de copy, seção 12).
+// "____" é o campo que a pessoa completa antes de enviar.
+export const waMessages = {
+  padrao: 'Oi! Vi a cabana sobre rodas no site e quero saber mais. Sou de ____.',
+  video: 'Oi! Vi a cabana no site e queria ver ela ao vivo por vídeo. Sou de ____ e posso em ____.',
+  troca: 'Oi! Vi a cabana no site. Tenho um carro para dar como parte do pagamento: ____ (modelo/ano).',
+  duvida: 'Oi! Vi a cabana no site e fiquei com uma dúvida: ____',
+  fotos: 'Oi! Vi a cabana no site e queria receber as fotos e o vídeo do tour. Sou de ____.',
+  motor: 'Oi! Vi a cabana no site e queria ver o vídeo do motor funcionando. Sou de ____.',
+}
+
+// Blocos condicionais no index.html: <!--if:flag--> ... <!--/if:flag--> e <!--if:!flag--> ... <!--/if:!flag-->
+function applyFlags(html, flags) {
+  return html.replace(/<!--if:(!?)([a-zA-Z]+)-->\n?([\s\S]*?)<!--\/if:\1\2-->\n?/g, (_, not, name, inner) => {
+    const on = Boolean(flags[name])
+    return (not ? !on : on) ? inner : ''
+  })
+}
+
 function applyConfig(html, cfg) {
-  const waText = `Olá! Vi o anúncio da Renault Master ${cfg.year} em Anitápolis/SC. Preço pedido ${cfg.priceLabel}. Quero saber mais — pode ser visita ou videochamada sem compromisso.`
-  const waHref = `https://wa.me/${cfg.whatsappNumber}?text=${encodeURIComponent(waText)}`
+  const wa = (key) => `https://wa.me/${cfg.whatsappNumber}?text=${encodeURIComponent(waMessages[key])}`
+  const waHref = wa('padrao')
   const notice = cfg.whatsappIsPlaceholder
     ? `<p class="config-notice" role="status">WhatsApp ainda é o número de exemplo. Antes de divulgar, edite <code>site.config.json</code> ou defina <code>WHATSAPP_NUMBER</code>.</p>`
     : ''
   const robots = cfg.whatsappIsPlaceholder ? 'noindex, nofollow' : 'index, follow'
+  const updated = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' }).format(new Date())
+
+  html = applyFlags(html, { gallery: cfg.showGallery, ownerPhoto: Boolean(cfg.ownerPhoto) })
 
   const replacements = [
     ['__PRICE_LABEL_JSON__', escapeJson(cfg.priceLabel)],
@@ -79,7 +103,14 @@ function applyConfig(html, cfg) {
     ['__KM_LABEL__', escapeHtml(cfg.kilometersLabel)],
     ['__KM_VALUE__', String(cfg.kilometersValue)],
     ['__YEAR__', String(cfg.year)],
+    ['__WA_HREF_VIDEO__', wa('video')],
+    ['__WA_HREF_TROCA__', wa('troca')],
+    ['__WA_HREF_DUVIDA__', wa('duvida')],
+    ['__WA_HREF_FOTOS__', wa('fotos')],
+    ['__WA_HREF_MOTOR__', wa('motor')],
     ['__WA_HREF__', waHref],
+    ['__OWNER_PHOTO__', escapeHtml(cfg.ownerPhoto || '')],
+    ['__UPDATED__', updated],
     ['__WHATSAPP__', cfg.whatsappNumber],
     ['__WA_DISPLAY__', escapeHtml(cfg.whatsappDisplay)],
     ['__CONFIG_NOTICE__', notice],

@@ -2,7 +2,7 @@
 
 Página estática, em português, do motorhome à venda: Renault Master 2006, cerca de 600.000 km com motor refeito aos 550 mil km (apenas ~50 mil km desde a retífica), em Anitápolis (SC). O preço pedido é **R$ 139.900**.
 
-Não é um gerenciador de conteúdo. O texto mora no `index.html`. Preço, ano, quilometragem e WhatsApp saem do `site.config.json` na hora do build. Fotos ainda são placeholders — veja `CONTENT.md`.
+Não é um gerenciador de conteúdo. O texto mora no `index.html`. Preço, ano, quilometragem e WhatsApp saem do `site.config.json` na hora do build. Fotos ainda não existem: a galeria está desligada (`showGallery: false`) — veja `CONTENT.md`.
 
 ## Prévia no ar (GitHub Pages)
 
@@ -50,7 +50,7 @@ npm run build
 npm run preview
 ```
 
-O build gera `dist/`, confere preço, ano, quilometragem, placeholders e caminhos relativos (`scripts/check-content.mjs`) e copia o resultado para `docs/`. O valor antigo de rascunho, R$ 182.000, não pode aparecer na página.
+O build gera `dist/`, confere preço, ano, quilometragem, links de WhatsApp, ausência de "placeholder" e de links de saída, e caminhos relativos (`scripts/check-content.mjs`) e copia o resultado para `docs/`. O valor antigo de rascunho, R$ 182.000, não pode aparecer na página.
 
 ## Preço
 
@@ -67,7 +67,7 @@ Edite `site.config.json`:
 
 ## WhatsApp
 
-O número publicado é o WhatsApp do Dan, **(51) 99202-2580** (`5551992022580`). Ele aparece visível no hero, em Visitas e no rodapé, e todos os links `wa.me` levam a mensagem pronta. O `check-content` falha se o antigo número de exemplo voltar.
+O número publicado é o WhatsApp do Dan, **(51) 99202-2580** (`5551992022580`). Ele aparece visível no bloco "Anúncio oficial único" e no rodapé, e todos os links `wa.me` levam mensagem pronta (as 6 variantes estão em `vite.config.js`, `waMessages`, e documentadas no `CONTENT.md`). O `check-content` falha se o antigo número de exemplo voltar.
 
 Use só dígitos, com DDI 55 (ex.: `5551992022580`).
 
@@ -86,11 +86,11 @@ No `.env`:
 WHATSAPP_NUMBER=5551992022580
 ```
 
-Troque pelo número de verdade e rode `npm run dev` ou `npm run build` de novo. O botão e o formulário abrem `https://wa.me/` com uma mensagem pronta. O formulário (nome, cidade, quando pode visitar) não envia dados para servidor nenhum: só monta o texto no navegador.
+Troque pelo número de verdade e rode `npm run dev` ou `npm run build` de novo. Todos os botões abrem `https://wa.me/` com uma mensagem pronta. Não há formulário: a seção de contato tem 3 botões de intenção (Quero ver por vídeo, Tenho carro para troca, Tenho uma dúvida), cada um com a sua mensagem.
 
 ## Fotos e vídeo
 
-Não coloque foto de banco de imagens. O passo a passo, os nomes de arquivo e as classes (`.media-slot`, `.media-placeholder`, `.media-frame--photo`, `data-slot`) estão em `public/media/README.md`. O mapa dos arquivos é `src/media-slots.js`.
+Não coloque foto de banco de imagens. A galeria e o vídeo só aparecem com `"showGallery": true` em `site.config.json`; até lá a página mostra o bloco "Receba fotos e o tour em vídeo no WhatsApp". O passo a passo e os nomes de arquivo estão em `public/media/README.md`. O mapa dos arquivos é `src/media-slots.js`. A foto do dono entra por `"ownerPhoto"` no mesmo `site.config.json`.
 
 ## Publicar na Vercel
 
@@ -106,7 +106,7 @@ Não é preciso configurar base. A Vercel publica na raiz do domínio.
 | --- | --- |
 | `index.html` | Página do anúncio |
 | `src/style.css` | Visual |
-| `src/main.js` | Menu, formulário do WhatsApp, troca dos placeholders |
+| `src/main.js` | Animações, marca de origem (utm) na mensagem do WhatsApp, carga das fotos quando a galeria estiver ligada |
 | `src/media-slots.js` | Onde ligar cada foto ou vídeo |
 | `site.config.json` | Preço, ano, km e WhatsApp padrão |
 | `.env.example` | Modelo da variável `WHATSAPP_NUMBER` |

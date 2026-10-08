@@ -1,54 +1,40 @@
 # Pasta de mídia
 
-Coloque aqui **somente fotos e vídeos deste motorhome**. Não use imagem de banco, anúncio de outro veículo ou mockup que pareça a van.
+Fotos e vídeo reais da van entram aqui. Hoje a pasta está vazia e a galeria está **desligada** (`"showGallery": false` em `site.config.json`). No lugar dela a página mostra o bloco "Receba fotos e o tour em vídeo no WhatsApp". Nenhum texto "placeholder" aparece para o visitante.
 
-Enquanto o arquivo não existe, a página mostra um bloco creme/cinza com a legenda terminando em “— placeholder”.
+## Como ligar a galeria
 
-## Como trocar um placeholder
+1. Exporte as fotos em JPG ou WebP (lado maior até ~1600 px) e o vídeo em MP4.
+2. Salve aqui com os nomes da tabela abaixo.
+3. Em `src/media-slots.js`, troque cada `null` pelo caminho (começa com `./media/`, relativo à página).
+4. Em `site.config.json`, mude `"showGallery"` para `true`.
+5. Rode `npm run build`. O check falha se a galeria estiver ligada com algum slot ainda vazio, ou se houver arquivo faltando.
 
-1. Exporte a foto já comprimida (JPG ou WebP, lado maior em torno de 2000 px). Vídeo: MP4, de preferência menos de 50 MB.
-2. Salve com o nome da tabela abaixo.
-3. Em `src/media-slots.js`, troque `null` pelo caminho. O caminho começa com `./media/` e é em relação à página, não a este arquivo.
+Se uma foto não carregar no navegador, o bloco mostra só a legenda (sem a palavra "placeholder").
 
-```js
-hero: "./media/hero.jpg",
-```
+## Foto do dono
 
-4. Rode de novo `npm run dev` ou `npm run build`.
-
-A legenda visível no placeholder está no `index.html` (`Foto exterior — placeholder`, etc.). Quando o arquivo carrega, a página passa a usar `data-caption` e `data-alt` do mesmo `<figure>`. Ajuste esses dois atributos para descrever a foto real.
-
-Se o caminho estiver errado, o bloco volta a ser placeholder com “arquivo não encontrado”.
-
-## Classes
-
-| Classe | Função |
-| --- | --- |
-| `.media-slot` | Cada figura (hero, galeria, vídeo) |
-| `.media-slot--hero` | Foto grande do topo |
-| `.media-slot--wide` | Enquadramento largo na grade |
-| `.media-slot--video` | Walkthrough |
-| `.media-frame` | Moldura com proporção fixa |
-| `.media-placeholder` / `.media-frame--placeholder` | Bloco cinza/creme |
-| `.media-frame--photo` | `<img>` ou `<video>` inserido quando há arquivo |
-| `data-slot` | Chave igual à de `src/media-slots.js` |
+Salve como `public/media/dono.jpg` (quadrada, ~400 px) e coloque `"ownerPhoto": "./media/dono.jpg"` em `site.config.json`. Ela aparece no bloco "Anúncio oficial único". Com `null`, o bloco fica só com texto.
 
 ## Arquivos previstos
 
-| `data-slot` | Arquivo sugerido | Legenda do placeholder |
+| `data-slot` | Arquivo sugerido | Legenda na página |
 | --- | --- | --- |
-| `hero` | `hero.jpg` | Foto exterior — placeholder |
-| `frente` | `frente.jpg` | Foto dianteira — placeholder |
-| `lateral` | `lateral.jpg` | Foto lateral — placeholder |
-| `interior` | `interior.jpg` | Foto interior, dia — placeholder |
-| `led` | `led.jpg` | Iluminação noturna, LED — placeholder |
-| `portas` | `portas.jpg` | Portas traseiras abertas — placeholder |
-| `quarto` | `quarto.jpg` | Quarto traseiro — placeholder |
-| `estante` | `estante.jpg` | Estante de livros — placeholder |
-| `cozinha` | `cozinha.jpg` | Cozinha — placeholder |
-| `banheiro` | `banheiro.jpg` | Banheiro — placeholder |
-| `solar` | `solar.jpg` | Placa solar — placeholder |
-| `baterias` | `baterias.jpg` | Baterias e quadro elétrico — placeholder |
-| `mesa` | `mesa.jpg` | Mesa conversível — placeholder |
-| `isolamento` | `isolamento.jpg` | Isolamento — placeholder |
-| `walkthrough` | `walkthrough.mp4` | Vídeo walkthrough — placeholder |
+| `hero` | `hero.jpg` | Foto grande do topo (exterior ou interior com luz quente) |
+| `leitura` | `leitura.jpg` | Fim de tarde: a luz dourada na estante de livros |
+| `quarto` | `quarto.jpg` | Café na cama, portas abertas |
+| `led` | `led.jpg` | De noite: luz quente em 4 camadas |
+| `interior` | `interior.jpg` | Pinus tratado, de ponta a ponta |
+| `banho` | `banho.jpg` | Banho quente a gás, longe da tomada |
+| `agua` | `agua.jpg` | 210 L de água; enche com mangueira |
+| `solar` | `solar.jpg` | Placa solar de 310 W |
+| `baterias` | `baterias.jpg` | 3 baterias estacionárias Freedom: 720 Ah |
+| `geladeira` | `geladeira.jpg` | Geladeira Resfriar 67 L 12/24 V |
+| `camas` | `camas.jpg` | Dorme 3: casal + solteiro |
+| `banheiro` | `banheiro.jpg` | Banheiro naval |
+| `motor` | `motor.jpg` | Motor refeito aos 550 mil km |
+| `exterior` | `exterior.jpg` | Master 2006 por fora |
+| `serra` | `serra.jpg` | Ela mora aqui: serra catarinense |
+| `walkthrough` | `walkthrough.mp4` | Tour em vídeo |
+
+As legendas ficam no `index.html` (`data-caption` e `data-alt` de cada figura). Imagens dos fabricantes (Equipamentos) ficam em `public/equipamentos/`, e o mapa estático em `public/mapa/`.

@@ -67,8 +67,8 @@ function setupReveal() {
 
   const phone = window.matchMedia('(max-width: 899px)').matches
   const selector = phone
-    ? '.section-head, .facts-list, .truths, .chapters, .gallery, .walkthrough, .sources, .battery, .indep-note, .equip-grid, .equip-foot, .table-wrap, .faq, .places, .map-card, .form-card, .footer-grid'
-    : '.section-head, .facts-list > li, .truths > li, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .indep-note, .equip-grid > li, .equip-foot, .table-wrap, .faq details, .places > li, .map-card, .form-card, .footer-grid > div'
+    ? '.section-head, .facts-grid, .cta-block, .chapters, .gallery, .walkthrough, .sources, .battery, .indep-note, .anchor, .spec-groups, .faq, .intent-grid, .trust, .map-card, .footer-grid'
+    : '.section-head, .facts-grid > li, .cta-block, .chapter, .gallery .media-slot, .walkthrough, .sources > li, .battery, .indep-note, .anchor > li, .spec-group, .faq details, .intent-grid, .trust, .map-card, .footer-grid > div'
   const nodes = [...document.querySelectorAll(selector)]
   if (!nodes.length) return
 
@@ -140,10 +140,10 @@ function upgradeMedia() {
       fallback.setAttribute('role', 'img')
       const kicker = document.createElement('span')
       kicker.className = 'media-kicker'
-      kicker.textContent = 'Placeholder'
+      kicker.textContent = 'Foto'
       const title = document.createElement('p')
       title.className = 'media-title'
-      title.textContent = `${caption || 'Mídia'} — arquivo não encontrado`
+      title.textContent = caption || 'Foto'
       fallback.append(kicker, title)
       media.replaceWith(fallback)
     })
@@ -161,66 +161,21 @@ function upgradeMedia() {
 
 upgradeMedia()
 
-const form = document.querySelector('#visita-form')
-const formError = document.querySelector('#form-error')
-const formFallback = document.querySelector('#form-fallback')
-const formFallbackLink = document.querySelector('#form-fallback-link')
-
-function clean(value, max) {
-  return value.replace(/\s+/g, ' ').trim().slice(0, max)
+// Origem do clique: ?utm_source=fb vira "(ref: fb)" no fim da mensagem pronta.
+function tagWhatsAppLinks() {
+  const params = new URLSearchParams(window.location.search)
+  const ref = (params.get('utm_source') || params.get('ref') || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]/g, '')
+    .slice(0, 20)
+  if (!ref) return
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach((link) => {
+    const url = new URL(link.href)
+    const text = url.searchParams.get('text') || ''
+    if (text.includes('(ref:')) return
+    url.searchParams.set('text', `${text} (ref: ${ref})`)
+    link.href = url.toString()
+  })
 }
 
-function showFormError(message) {
-  if (!formError) return
-  formError.hidden = false
-  formError.textContent = message
-}
-
-function clearFormError() {
-  if (!formError) return
-  formError.hidden = true
-  formError.textContent = ''
-}
-
-form?.addEventListener('input', clearFormError)
-
-form?.addEventListener('submit', (event) => {
-  event.preventDefault()
-  clearFormError()
-  formFallback?.setAttribute('hidden', '')
-
-  const nome = clean(form.nome.value, 80)
-  const cidade = clean(form.cidade.value, 80)
-  const quando = clean(form.quando.value, 80)
-
-  if (!nome || !cidade || !quando) {
-    showFormError('Preencha nome, cidade e quando / formato (visita ou videochamada).')
-    if (!nome) form.nome.focus()
-    else if (!cidade) form.cidade.focus()
-    else form.quando.focus()
-    return
-  }
-
-  const { whatsapp, price, year, km } = document.body.dataset
-  if (!whatsapp) {
-    showFormError('O WhatsApp deste anúncio ainda não está configurado.')
-    return
-  }
-
-  const text = [
-    `Olá! Vi o motorhome Renault Master ${year} em Anitápolis (preço pedido ${price}).`,
-    '',
-    `Nome: ${nome}`,
-    `Cidade: ${cidade}`,
-    `Quando / formato: ${quando}`,
-  ].join('\n')
-
-  const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`
-  const opened = window.open(url, '_blank', 'noopener,noreferrer')
-
-  if (!opened && formFallback && formFallbackLink) {
-    formFallback.hidden = false
-    formFallbackLink.href = url
-    showFormError('O navegador bloqueou a nova aba. Use o link abaixo para abrir o WhatsApp.')
-  }
-})
+tagWhatsAppLinks()
