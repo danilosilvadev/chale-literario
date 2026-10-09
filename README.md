@@ -8,10 +8,12 @@ Não é um gerenciador de conteúdo. O texto mora no `index.html`. Preço, ano, 
 
 URL pública: **https://vistasobrerodas.com.br/chale-literario/** (catálogo em `/chale-literario/catalogo.html`).
 
-O site é exportado em `docs/` com caminhos relativos (`base: './'` no Vite), então funciona nesse caminho de projeto e também no espelho `https://danilosilvadev.github.io/chale-literario/` enquanto o DNS do domínio customizado propaga.
+O domínio `vistasobrerodas.com.br` está configurado **neste repositório** (Pages: branch `main`, pasta `/docs`, CNAME em `docs/CNAME`). Layout publicado:
 
-Pages deste repositório: branch `main`, pasta `/docs`. O site raiz `danilosilvadev.github.io` redireciona `/` para `/chale-literario/`; o CNAME `vistasobrerodas.com.br` entra lá quando o DNS no Registro.br apontar para o GitHub.
+- `docs/chale-literario/` — o site buildado (é o que o build gera a partir de `dist/`).
+- `docs/` (raiz do domínio) — `CNAME`, `index.html` (redireciona `/` para `/chale-literario/`), `404.html` e `motorhome-venda/` (redirects do endereço antigo). Esses arquivos vêm de `pages-root/`; edite lá, o build recopia.
 
+Os caminhos são relativos (`base: './'` no Vite). Não apague `docs/CNAME` nem `pages-root/CNAME`: sem ele o domínio cai. O repositório `danilosilvadev.github.io` não tem mais domínio customizado, então os outros projetos da conta ficam em `danilosilvadev.github.io/<repo>/`.
 
 Cada mudança de texto, preço ou foto pede um build novo e um commit da pasta `docs/`:
 
@@ -42,7 +44,7 @@ npm run build
 npm run preview
 ```
 
-O build gera `dist/`, confere preço, ano, quilometragem, links de WhatsApp, ausência de "placeholder" e de links de saída, e caminhos relativos (`scripts/check-content.mjs`) e copia o resultado para `docs/`. O valor antigo de rascunho, R$ 182.000, não pode aparecer na página.
+O build gera `dist/`, confere preço, ano, quilometragem, links de WhatsApp, ausência de "placeholder" e de links de saída, e caminhos relativos (`scripts/check-content.mjs`) e copia o resultado para `docs/chale-literario/` (mais `pages-root/` na raiz de `docs/`). O valor antigo de rascunho, R$ 182.000, não pode aparecer na página.
 
 ## Preço
 
@@ -109,4 +111,5 @@ Não é preciso configurar base. A Vercel publica na raiz do domínio.
 | `.env.example` | Modelo da variável `WHATSAPP_NUMBER` |
 | `public/media/` | Arquivos reais, quando existirem |
 | `CONTENT.md` | Preço pedido e o combinado sobre as fotos |
-| `docs/` | Site já buildado, pronto para GitHub Pages (`main` / `/docs`) |
+| `docs/` | Publicado no GitHub Pages (`main` / `/docs`): site em `docs/chale-literario/`, raiz do domínio em `docs/` |
+| `pages-root/` | Arquivos da raiz do domínio (CNAME, redirects), copiados para `docs/` no build |
